@@ -1,0 +1,15 @@
+
+<?> a comment
+
+<jars>
+../SplainTime/dist/SplainTime.jar
+C:/Users/Nicholas/Downloads/SplainTime.jar
+</jars>
+
+<args>
+out-C:/Users/Nicholas/Downloads
+-h
+
+</args>
+
+

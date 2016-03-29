@@ -1,0 +1,42 @@
+
+Notes
+
+-- selection ui
+
+Oh, I didn't realize that I'm leaning toward using the args interchangably. That won't make sense for most cases. Oh well. Also it means jarArgs works for the last one; but not the inital.
+
+-- omgarg format
+
+		final String commentTag = "<?>";
+		final String jarOpenTag = "<jars>";
+		final String jarCloseTag = "</jars>";
+		final String argOpenTag = "<args>";
+		final String argCloseTag = "</args>";
+
+Or, should it be more suggestive of good pairs; but you can mix if you want?
+../../Banana/Splaintime.jar || -out-./usr/logs/bananas
+
+Or even I just pull it out on the assumption that the first part is valid and you can mix the rest?
+../../Banana/Splaintime.jar || -out-./usr/logs/bananas
+
+Well, what's my use case? Mix and match most jars/args interchangably. That's the answer to that.
+
+-- launch jar
+
+	http://docs.oracle.com/javase/7/docs/api/java/lang/ProcessBuilder.html
+Here is an example that starts a process with a modified working directory and environment, and redirects standard output and error to be appended to a log file:
+ ProcessBuilder pb =
+   new ProcessBuilder("myCommand", "myArg1", "myArg2");
+ Map<String, String> env = pb.environment();
+ env.put("VAR1", "myValue");
+ env.remove("OTHERVAR");
+ env.put("VAR2", env.get("VAR1") + "suffix");
+ pb.directory(new File("myDir"));
+ File log = new File("log");
+ pb.redirectErrorStream(true);
+ pb.redirectOutput(Redirect.appendTo(log));
+ Process p = pb.start();
+ assert pb.redirectInput() == Redirect.PIPE;
+ assert pb.redirectOutput().file() == log;
+ assert p.getInputStream().read() == -1;
+To start a process with an explicit set of environment variables, first call Map.clear() before adding environment variables.
