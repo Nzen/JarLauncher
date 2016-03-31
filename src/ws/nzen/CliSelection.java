@@ -20,8 +20,7 @@ public class CliSelection implements SelectionUi
 	@Override
 	public void setVisible( boolean yeahNow )
 	{
-		// TODO Auto-generated method stub
-		
+		System.out.println( "launch jar?" );
 	}
 
 	@Override

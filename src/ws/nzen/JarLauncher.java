@@ -51,11 +51,6 @@ public class JarLauncher implements ActionListener
 		String toUse = userSelection.getActionCommand();
 		Launcher platform = new Launcher( new JarModel(), toUse );
 		platform.runJar();
-		/*
-		harvest selection from ae or ui
-		provide to launcher
-		run
-		*/
 	}
 
 }

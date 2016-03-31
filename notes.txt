@@ -3,7 +3,8 @@ Notes
 
 -- selection ui
 
-Oh, I didn't realize that I'm leaning toward using the args interchangably. That won't make sense for most cases. Oh well. Also it means jarArgs works for the last one; but not the inital.
+Oh, I didn't realize that I'm leaning toward using the args interchangably. That won't make sense for most cases outside of work.
+ Oh well. Also it means jarArgs works for the last one; but not the inital.
 
 -- omgarg format
 
