@@ -43,13 +43,15 @@ public class JarLauncher implements ActionListener
 		JarModel tableOfOptions = knowsLocation.getJarOptions();
 		SelectionUi toShow = new CliSelection();
 		toShow.setJarModel( tableOfOptions );
+		toShow.addActionListener( this );
 		toShow.setVisible( true );
 	}
 
 	public void actionPerformed( ActionEvent userSelection )
 	{
 		String toUse = userSelection.getActionCommand();
-		Launcher platform = new Launcher( new JarModel(), toUse );
+		JarModel finalChoice = new JarModel();
+		Launcher platform = new Launcher( finalChoice, toUse );
 		platform.runJar();
 	}
 

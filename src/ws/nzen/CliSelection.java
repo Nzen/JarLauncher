@@ -1,6 +1,7 @@
 /** see License.md */
 package ws.nzen;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
@@ -9,6 +10,7 @@ import java.awt.event.ActionListener;
  */
 public class CliSelection implements SelectionUi
 {
+	private ActionListener reactor;
 
 	@Override
 	public void setJarModel( JarModel toBuildUiAround )
@@ -20,14 +22,16 @@ public class CliSelection implements SelectionUi
 	@Override
 	public void setVisible( boolean yeahNow )
 	{
-		System.out.println( "launch jar?" );
+		System.out.println( "which jar?" );
+		System.out.println( "which args?" );
+		// FIX move next bit elsewhere
+		reactor.actionPerformed(new ActionEvent( this, 6345, "SplainTime.jar" ));
 	}
 
 	@Override
 	public void addActionListener( ActionListener toRespondToSelection )
 	{
-		// TODO Auto-generated method stub
-		
+		reactor = toRespondToSelection;
 	}
 
 }

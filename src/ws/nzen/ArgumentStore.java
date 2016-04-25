@@ -13,7 +13,7 @@ public class ArgumentStore
 
 	public JarModel getJarOptions()
 	{
-		return new ConfigParser().parseFrom( Paths.get(null) );
+		return new ConfigParser().parseFrom( Paths.get("") );
 	}
 
 }

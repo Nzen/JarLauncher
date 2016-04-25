@@ -1,8 +1,10 @@
 /** see License.md */
 package ws.nzen;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Launcher
 {
@@ -12,8 +14,9 @@ public class Launcher
 	public Launcher( JarModel yeah, String itsLate )
 	{
 		// like construct a processbuilder from that or whatever
-		whereIsJar = yeah.getJarPaths().get(0);
-		args = yeah.getJarArgs().get(0);
+		whereIsJar = Paths.get(itsLate); // probably itsLate is the selection indicies or something?
+		//whereIsJar = yeah.getJarPaths().get( itsLate[0] );
+		args = ""; // yeah.getJarArgs().get( itsLate[1] );
 	}
 
 	public void runJar()
@@ -21,8 +24,8 @@ public class Launcher
 		String command = "java -jar "+ whereIsJar.toString()
 				+" "+ args;
 		ProcessBuilder yourJar = new ProcessBuilder( command );
-		yourJar.directory( whereIsJar.toFile() );
-		if ( whetherNeedsIo() )
+		//yourJar.directory( whereIsJar.toAbsolutePath().getParent().toFile() );
+		if ( needsIo() )
 		{
 			yourJar.inheritIO();
 		}
@@ -36,7 +39,7 @@ public class Launcher
 		}
 	}
 
-	private boolean whetherNeedsIo()
+	private boolean needsIo()
 	{
 		return args.contains( "-debug" ); // eventually do something more robust
 	}
