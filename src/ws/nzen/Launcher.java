@@ -1,10 +1,10 @@
 /** see License.md */
 package ws.nzen;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Launcher
 {
@@ -22,8 +22,12 @@ public class Launcher
 
 	public void runJar()
 	{
-		String command = whereIsJvm.toString() +" -jar "+ whereIsJar.getFileName() +" "+ args;
-		ProcessBuilder yourJar = new ProcessBuilder( command );
+		List<String> commandComponents = new LinkedList<String>();
+		commandComponents.add( whereIsJvm.toString() );
+		commandComponents.add( "-jar" );
+		commandComponents.add( whereIsJar.getFileName().toString() );
+		commandComponents.add( args );
+		ProcessBuilder yourJar = new ProcessBuilder( commandComponents );
 		yourJar.directory( whereIsJar.getParent().toFile() );
 		if ( needsIo() )
 		{
@@ -31,27 +35,6 @@ public class Launcher
 		}
 		try
 		{
-			yourJar.start();
-		}
-		catch ( IOException ie )
-		{
-			System.err.println( "Couldn't launch jar because "+ ie.toString() );
-		}
-	}
-
-	/** tired of getting proof of concept under three layers of abstraction */
-	private static void remedial()
-	{
-		String what = "/usr/bin/java -jar"; // doesn't work
-		java.util.List<String> separated = new java.util.LinkedList<String>();
-		separated.add( "/usr/bin/java" );
-		separated.add( "-jar" );
-		separated.add( "SplainTime.jar" );
-		ProcessBuilder yourJar = new ProcessBuilder( separated );
-		// yourJar.directory( java.nio.file.Paths.get( "" ).toFile() );
-		try
-		{
-			yourJar.inheritIO();
 			yourJar.start();
 		}
 		catch ( IOException ie )

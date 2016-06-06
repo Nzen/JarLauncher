@@ -3,7 +3,6 @@ package ws.nzen;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.nio.file.Path;
 
 /**
@@ -13,7 +12,10 @@ import java.nio.file.Path;
 public class JarLauncher implements ActionListener
 {
 	Path toJvm;
-	ArgumentStore jarInfo;
+	@Deprecated
+	private ArgumentStore jarInfo;
+	// use this instead
+	private JarModel tableOfOptions;
 
 	/**
 	 * @param args potentially the arg file location
@@ -26,29 +28,7 @@ public class JarLauncher implements ActionListener
 		}
 		else
 		{
-			// new JarLauncher();
-			remedial();
-		}
-	}
-
-	/** tired of getting proof of concept under three layers of abstraction */
-	private static void remedial()
-	{
-		String what = "/usr/bin/java -jar"; // doesn't work
-		java.util.List<String> separated = new java.util.LinkedList<String>();
-		separated.add( "/usr/bin/java" );
-		separated.add( "-jar" );
-		separated.add( "SplainTime.jar" );
-		ProcessBuilder yourJar = new ProcessBuilder( separated );
-		// yourJar.directory( java.nio.file.Paths.get( "" ).toFile() );
-		try
-		{
-			yourJar.inheritIO();
-			yourJar.start();
-		}
-		catch ( IOException ie )
-		{
-			System.err.println( "Couldn't launch jar because "+ ie.toString() );
+			new JarLauncher();
 		}
 	}
 
@@ -69,7 +49,7 @@ public class JarLauncher implements ActionListener
 	private void showOptionsToUser( String filename )
 	{
 		jarInfo = new ArgumentStore( filename );
-		JarModel tableOfOptions = jarInfo.getJarOptions();
+		tableOfOptions = jarInfo.getJarOptions();
 		toJvm = jarInfo.getJvmLocation();
 		SelectionUi toShow = new CliSelection();
 		toShow.setJarModel( tableOfOptions );

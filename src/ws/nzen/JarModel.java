@@ -1,7 +1,6 @@
 /** see License.md */
 package ws.nzen;
 
-import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -10,10 +9,25 @@ import java.util.List;
  */
 public class JarModel
 {
-	private List<Path> jarPaths;
+	private List<String> jarPaths;
 	private List<String> jarArgs;
 
-	public List<Path> getJarPaths()
+	public String getCombinationReference( String aPath, String someArgs )
+	{
+		return "UNREADY";
+	}
+
+	public String getJarOfComboRef( String combinationReference )
+	{
+		return "UNREADY";
+	}
+
+	public String getArgsOfComboRef( String combinationReference )
+	{
+		return "UNREADY";
+	}
+
+	public List<String> getJarPaths()
 	{
 		return jarPaths;
 	}
@@ -21,7 +35,7 @@ public class JarModel
 	{
 		return jarArgs;
 	}
-	public void setJarPaths( List<Path> jarPaths )
+	public void setJarPaths( List<String> jarPaths )
 	{
 		this.jarPaths = jarPaths;
 	}

@@ -3,6 +3,7 @@ package ws.nzen;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Scanner;
 
 /**
  * @author nzen
@@ -11,21 +12,53 @@ import java.awt.event.ActionListener;
 public class CliSelection implements SelectionUi
 {
 	private ActionListener reactor;
+	private JarModel knowsJars;
 
 	@Override
 	public void setJarModel( JarModel toBuildUiAround )
 	{
-		// TODO Auto-generated method stub
-		
+		knowsJars = toBuildUiAround;
 	}
 
 	@Override
 	public void setVisible( boolean yeahNow )
 	{
-		System.out.println( "which jar?" );
-		System.out.println( "which args?" );
-		// FIX move next bit elsewhere
-		reactor.actionPerformed(new ActionEvent( this, 6345, "SplainTime.jar" ));
+		Scanner input = new Scanner( System.in );
+		System.out.println( "Available jars:" );
+		int ind = 0;
+		for ( String jarPath : knowsJars.getJarPaths() )
+		{
+			System.out.print( ind +" "+ jarPath );
+			ind++;
+		}
+		System.out.print( "-- ? " );
+		Integer jarInd;
+		try
+		{
+			jarInd = input.nextInt();
+		}
+		catch ( Exception ugh )
+		{
+			System.err.print( "Grr couldn't make that an int :[ "+ ugh );
+		}
+		System.out.println( "Available jars:" );
+		ind = 0;
+		for ( String arg : knowsJars.getJarArgs() )
+		{
+			System.out.print( ind +" "+ arg );
+			ind++;
+		}
+		Integer argInd;
+		try
+		{
+			argInd = input.nextInt();
+		}
+		catch ( Exception ugh )
+		{
+			System.err.print( "Grr couldn't make that an int :[ "+ ugh );
+		}
+		reactor.actionPerformed(new ActionEvent( this, 6345,
+				knowsJars.getCombinationReference("jar","args") ));
 	}
 
 	@Override

@@ -1,6 +1,12 @@
 
 Notes
 
+-- remaining
+
+CliSelection	show options from jarModel , get user input
+JarModel / ArgStore 	which am I using ? very similar role , construct event selection string , map '' to jar/arg
+SwingSelection	create so I use the real event thread
+
 -- selection ui
 
 Oh, I didn't realize that I'm leaning toward using the args interchangably. That won't make sense for most cases outside of work.
@@ -8,6 +14,7 @@ Oh, I didn't realize that I'm leaning toward using the args interchangably. That
 
 -- omgarg format
 
+		// first line is the jvm location //
 		final String commentTag = "<?>";
 		final String jarOpenTag = "<jars>";
 		final String jarCloseTag = "</jars>";
