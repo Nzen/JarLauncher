@@ -12,8 +12,6 @@ import java.nio.file.Path;
 public class JarLauncher implements ActionListener
 {
 	Path toJvm;
-	@Deprecated
-	private ArgumentStore jarInfo;
 	// use this instead
 	private JarModel tableOfOptions;
 
@@ -48,7 +46,7 @@ public class JarLauncher implements ActionListener
 	/** prep selection ui so user can choose the jar to launch */
 	private void showOptionsToUser( String filename )
 	{
-		jarInfo = new ArgumentStore( filename );
+		ArgumentStore jarInfo = new ArgumentStore( filename );
 		tableOfOptions = jarInfo.getJarOptions();
 		toJvm = jarInfo.getJvmLocation();
 		SelectionUi toShow = new CliSelection();
@@ -63,8 +61,8 @@ public class JarLauncher implements ActionListener
 		String toUse = userSelection.getActionCommand();
 		Launcher platform = new Launcher(
 				toJvm,
-				jarInfo.jarCorrespondingTo(toUse),
-				jarInfo.argsCorrespondingTo(toUse) );
+				tableOfOptions.getJarOfComboRef(toUse),
+				tableOfOptions.getArgsOfComboRef(toUse) );
 		platform.runJar();
 	}
 

@@ -3,6 +3,7 @@ package ws.nzen;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,11 +13,11 @@ public class Launcher
 	private Path whereIsJar;
 	private String args;
 
-	public Launcher( Path jvm, Path toLaunch, String itsArgs )
+	public Launcher( Path jvm, String toLaunch, String itsArgs )
 	{
-		// like construct a processbuilder from that or whatever
 		whereIsJvm = jvm;
-		whereIsJar = toLaunch;
+		whereIsJar = Paths.get( toLaunch ).toAbsolutePath();
+		// throws InvalidPathException - if the path string cannot be converted to a Path
 		args = itsArgs;
 	}
 
@@ -26,9 +27,14 @@ public class Launcher
 		commandComponents.add( whereIsJvm.toString() );
 		commandComponents.add( "-jar" );
 		commandComponents.add( whereIsJar.getFileName().toString() );
+		System.out.println( whereIsJar.toString() ); // 4TESTS
 		commandComponents.add( args );
 		ProcessBuilder yourJar = new ProcessBuilder( commandComponents );
 		yourJar.directory( whereIsJar.getParent().toFile() );
+
+		for ( String arg : commandComponents )
+			System.out.print( " "+ arg );
+
 		if ( needsIo() )
 		{
 			yourJar.inheritIO();

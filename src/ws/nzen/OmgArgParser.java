@@ -12,15 +12,15 @@ import java.util.List;
  */
 public class OmgArgParser
 {
-	private List<Path> jarPaths;
+	private List<String> jarPaths;
 	private List<String> jarArgs;
 
 	public JarModel parseToModel()
 	{
 		JarModel persisted = new JarModel();
-		Path here = Paths.get("../../SplainTime.jar");
+		String here = "../../SplainTime.jar";
 		String howToInit = "-h";
-		jarPaths = new LinkedList<Path>();
+		jarPaths = new LinkedList<String>();
 		jarPaths.add(here);
 		jarArgs = new LinkedList<String>();
 		jarArgs.add(howToInit);

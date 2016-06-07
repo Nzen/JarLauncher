@@ -3,8 +3,9 @@ Notes
 
 -- remaining
 
-CliSelection	show options from jarModel , get user input
-JarModel / ArgStore 	which am I using ? very similar role , construct event selection string , map '' to jar/arg
+OmgArgParser / FastArgParser / omg.xml.sax	use some kind of parser so I can harvest from files
+ConfigParser	perhaps an extension based enum ? ; is this supposed to be an interface ?
+Argument Store	does this or the above choose the specific parser ?
 SwingSelection	create so I use the real event thread
 
 -- selection ui
