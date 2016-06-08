@@ -1,10 +1,10 @@
 /** see License.md */
-package ws.nzen;
+package ws.nzen.parser;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
+
+import ws.nzen.JarModel;
 
 /**
  * @author nzen

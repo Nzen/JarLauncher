@@ -27,13 +27,13 @@ public class Launcher
 		commandComponents.add( whereIsJvm.toString() );
 		commandComponents.add( "-jar" );
 		commandComponents.add( whereIsJar.getFileName().toString() );
-		System.out.println( whereIsJar.toString() ); // 4TESTS
+		// System.out.println( whereIsJar.toString() ); // 4TESTS
 		commandComponents.add( args );
 		ProcessBuilder yourJar = new ProcessBuilder( commandComponents );
 		yourJar.directory( whereIsJar.getParent().toFile() );
 
-		for ( String arg : commandComponents )
-			System.out.print( " "+ arg );
+		/*for ( String arg : commandComponents )
+			System.out.print( " "+ arg );  // also 4TESTS */
 
 		if ( needsIo() )
 		{

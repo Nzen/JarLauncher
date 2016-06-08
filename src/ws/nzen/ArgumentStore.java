@@ -17,14 +17,7 @@ public class ArgumentStore
 
 	public JarModel getJarOptions()
 	{
-		// return new ConfigParser().parseFrom( toSerialized ); // UNREADY
-		List<String> replace = new java.util.ArrayList<String>(2);
-		replace.add( "SplainTime.jar" );
-		replace.add( "Applpi.jar" );
-		List<String> unready = new java.util.ArrayList<String>(2);
-		unready.add( "-h" );
-		unready.add( "" );
-		return new JarModel( replace, unready );
+		return new ConfigParser().parseFrom( toSerialized );
 	}
 
 	public Path getJvmLocation()

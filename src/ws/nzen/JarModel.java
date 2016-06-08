@@ -12,6 +12,7 @@ public class JarModel
 {
 	private List<String> jarPaths;
 	private List<String> jarArgs;
+	private String jvmLocation = "";
 	private final String separ = ":";
 
 	public JarModel()
@@ -21,6 +22,13 @@ public class JarModel
 
 	public JarModel( List<String> theJars, List<String> theOptions )
 	{
+		setJarPaths( theJars );
+		setJarArgs( theOptions );
+	}
+
+	public JarModel( String jvm, List<String> theJars, List<String> theOptions )
+	{
+		setJvmLocation( jvm );
 		setJarPaths( theJars );
 		setJarArgs( theOptions );
 	}
@@ -44,7 +52,7 @@ public class JarModel
 		{
 			if ( someArg.equals(chosenArgs) )
 			{
-				indOfPath = Integer.toString(ind);
+				indOfArg = Integer.toString(ind);
 				break;
 			}
 			ind++;
@@ -116,6 +124,16 @@ public class JarModel
 			this.jarArgs = new java.util.LinkedList<String>();
 		else
 			this.jarArgs = pJarArgs;
+	}
+
+	public String getJvmLocation()
+	{
+		return jvmLocation;
+	}
+
+	public void setJvmLocation( String jvmLocation )
+	{
+		this.jvmLocation = jvmLocation;
 	}
 
 }

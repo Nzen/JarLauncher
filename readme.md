@@ -1,12 +1,12 @@
 
-== Jar Launcher ==
+## Jar Launcher ##
 
 Allows user to select a jar and arguments.
 
-== Motivation ==
+## Motivation ##
 
 We use a number of jars at work with differing arguments. I don't want so many shortcuts on my desktop.
 
-== License ==
+## License ##
 
 see License.md for license information

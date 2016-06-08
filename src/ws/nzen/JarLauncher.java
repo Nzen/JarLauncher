@@ -4,6 +4,9 @@ package ws.nzen;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import ws.nzen.ui.CliSelection;
 
 /**
  * @author nzen
@@ -33,7 +36,7 @@ public class JarLauncher implements ActionListener
 	/** uses the default argfile to show options */
 	public JarLauncher()
 	{
-		String testFile = "config.omgArg";
+		String testFile = "config.fastArg";
 		showOptionsToUser( testFile );
 	}
 
@@ -48,14 +51,14 @@ public class JarLauncher implements ActionListener
 	{
 		ArgumentStore jarInfo = new ArgumentStore( filename );
 		tableOfOptions = jarInfo.getJarOptions();
-		toJvm = jarInfo.getJvmLocation();
+		toJvm = Paths.get( tableOfOptions.getJvmLocation() );
 		SelectionUi toShow = new CliSelection();
 		toShow.setJarModel( tableOfOptions );
 		toShow.addActionListener( this );
 		toShow.setVisible( true );
 	}
 
-	/** called by SelectionUi to indicate the  */
+	/** called by SelectionUi to indicate we are ready */
 	public void actionPerformed( ActionEvent userSelection )
 	{
 		String toUse = userSelection.getActionCommand();
