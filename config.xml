@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<options>
+	<location type="jvm">/usr/bin/java</location>
+	<!-- jars -->
+	<location type="jar">../SplainTime/dist/SplainTime.jar</location>
+	<location type="jar">C:/Users/Nicholas/Downloads/SplainTime.jar</location>
+	<location type="jar"></location>
+	<!-- args -->
+	<argBundle>
+		<bit>-h</bit>
+	</argBundle>
+	<argBundle>
+		<bit>-am</bit>
+		<bit>-debug</bit>
+	</argBundle>
+</options>

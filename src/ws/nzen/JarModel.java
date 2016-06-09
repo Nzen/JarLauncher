@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class JarModel
 {
-	private List<String> jarPaths;
+	private List<String> jarPaths; // IMPROVE use a map instead
 	private List<String> jarArgs;
 	private String jvmLocation = "";
 	private final String separ = ":";
@@ -82,11 +82,11 @@ public class JarModel
 	}
 
 	/** comboRef should be \w:\d+ use latter to find the matching arg */
-	public String getArgsOfComboRef( String combinationReference )
+	public String[] getArgsOfComboRef( String combinationReference )
 	{
 		String[] indicies = combinationReference.split( separ );
 		if ( indicies.length < 2 || indicies[1].isEmpty() )
-			return "";
+			return new String[0];
 		int indOfArg = -1;
 		try
 		{
@@ -98,9 +98,9 @@ public class JarModel
 					+" is not a number callee "+ leSigh );
 		}
 		if ( indOfArg < 0 || indOfArg >= jarArgs.size() )
-			return "";
+			return new String[0];
 		else
-			return jarArgs.get( indOfArg );
+			return jarArgs.get( indOfArg ).split( " " );
 	}
 
 	public List<String> getJarPaths()
@@ -111,6 +111,7 @@ public class JarModel
 	{
 		return jarArgs;
 	}
+
 	public void setJarPaths( List<String> pJarPaths )
 	{
 		if ( pJarPaths == null )

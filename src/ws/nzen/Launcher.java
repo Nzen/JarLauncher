@@ -11,9 +11,9 @@ public class Launcher
 {
 	private Path whereIsJvm;
 	private Path whereIsJar;
-	private String args;
+	private String[] args;
 
-	public Launcher( Path jvm, String toLaunch, String itsArgs )
+	public Launcher( Path jvm, String toLaunch, String[] itsArgs )
 	{
 		whereIsJvm = jvm;
 		whereIsJar = Paths.get( toLaunch ).toAbsolutePath();
@@ -29,8 +29,7 @@ public class Launcher
 		commandComponents.add( whereIsJar.getFileName().toString() );
 		// System.out.println( whereIsJar.toString() ); // 4TESTS
 			// FIX cheating for now. have the model split these
-		String[] argPieces = args.split( " " );
-		for ( String currArg : argPieces )
+		for ( String currArg : args )
 		{
 			commandComponents.add( currArg );
 		}
@@ -56,7 +55,26 @@ public class Launcher
 
 	private boolean needsIo()
 	{
-		return args.contains( "-debug" ); // eventually do something more robust
+		for ( String each : args )
+			if (each.equals( "-debug" )) // eventually do something more robust
+				return true;
+		// else
+		return false;
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

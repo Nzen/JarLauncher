@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import ws.nzen.parser.ConfigParser;
+import ws.nzen.parser.ParserFactory;
 import ws.nzen.ui.CliSelection;
 
 /**
@@ -37,20 +39,31 @@ public class JarLauncher implements ActionListener
 	public JarLauncher()
 	{
 		String testFile = "config.fastArg";
-		showOptionsToUser( testFile );
+		sendToParser( testFile );
 	}
 
 	/** uses user supplied argfile to show options */
 	public JarLauncher( String fromArg )
 	{
-		showOptionsToUser( fromArg );
+		sendToParser( fromArg );
 	}
 
-	/** prep selection ui so user can choose the jar to launch */
-	private void showOptionsToUser( String filename )
+	/** wait until parser is done */
+	private void sendToParser( String filename )
 	{
-		ArgumentStore jarInfo = new ArgumentStore( filename );
-		tableOfOptions = jarInfo.getJarOptions();
+		ConfigParser dataGrinder = ParserFactory.viaExt( filename );
+		dataGrinder.setCompletionListener( this );
+	}
+
+	/** model is ready, so show that to the user */
+	public void showOptions( JarModel optionsFromConfig )
+	{
+		if ( optionsFromConfig == null )
+		{
+			System.err.print( "le sigh, parsing failed. quitting" );
+			System.exit( 1 );
+		}
+		tableOfOptions = optionsFromConfig;
 		toJvm = Paths.get( tableOfOptions.getJvmLocation() );
 		SelectionUi toShow = new CliSelection();
 		toShow.setJarModel( tableOfOptions );

@@ -10,20 +10,37 @@ import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
 
+import ws.nzen.JarLauncher;
 import ws.nzen.JarModel;
 
 /**
  * @author nzen
  *
  */
-public class FastArgParser
+public class FastArgParser implements ConfigParser
 {
 	private Path fastArgFile;
 	private JarModel aggregate;
+	private JarLauncher theActualRoot;
 
 	public FastArgParser( Path toUse )
 	{
 		fastArgFile = toUse;
+	}
+
+	public void setCompletionListener( JarLauncher tailWaggingTheDog )
+	{
+		theActualRoot = tailWaggingTheDog;
+	}
+
+	public void setPathToConfig( Path aFile )
+	{
+		fastArgFile = aFile;
+	}
+
+	public void parseConfig()
+	{
+		theActualRoot.showOptions( parseToModel() );
 	}
 
 	public JarModel parseToModel()
