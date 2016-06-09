@@ -28,7 +28,12 @@ public class Launcher
 		commandComponents.add( "-jar" );
 		commandComponents.add( whereIsJar.getFileName().toString() );
 		// System.out.println( whereIsJar.toString() ); // 4TESTS
-		commandComponents.add( args );
+			// FIX cheating for now. have the model split these
+		String[] argPieces = args.split( " " );
+		for ( String currArg : argPieces )
+		{
+			commandComponents.add( currArg );
+		}
 		ProcessBuilder yourJar = new ProcessBuilder( commandComponents );
 		yourJar.directory( whereIsJar.getParent().toFile() );
 
