@@ -4,13 +4,18 @@
 	<!-- jars -->
 	<location type="jar">../SplainTime/dist/SplainTime.jar</location>
 	<location type="jar">C:/Users/Nicholas/Downloads/SplainTime.jar</location>
-	<location type="jar"></location>
+	<location type="jar">
+		<path></path>
+		<desc></desc>
+	</location>
 	<!-- args -->
 	<argBundle>
-		<bit>-h</bit>
+		<flag>-h</flag>
 	</argBundle>
 	<argBundle>
-		<bit>-am</bit>
-		<bit>-debug</bit>
+		<summary></summary>
+		<flag>-am</flag>
+		<flag>-debug</flag>
+		<needsIo />
 	</argBundle>
 </options>

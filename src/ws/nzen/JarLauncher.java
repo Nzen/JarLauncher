@@ -16,8 +16,7 @@ import ws.nzen.ui.CliSelection;
  */
 public class JarLauncher implements ActionListener
 {
-	Path toJvm;
-	// use this instead
+
 	private JarModel tableOfOptions;
 
 	/**
@@ -64,7 +63,6 @@ public class JarLauncher implements ActionListener
 			System.exit( 1 );
 		}
 		tableOfOptions = optionsFromConfig;
-		toJvm = Paths.get( tableOfOptions.getJvmLocation() );
 		SelectionUi toShow = new CliSelection();
 		toShow.setJarModel( tableOfOptions );
 		toShow.addActionListener( this );
@@ -76,7 +74,7 @@ public class JarLauncher implements ActionListener
 	{
 		String toUse = userSelection.getActionCommand();
 		Launcher platform = new Launcher(
-				toJvm,
+				Paths.get( tableOfOptions.getJvmLocation() ),
 				tableOfOptions.getJarOfComboRef(toUse),
 				tableOfOptions.getArgsOfComboRef(toUse) );
 		platform.runJar();

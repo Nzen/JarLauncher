@@ -34,15 +34,16 @@ public class CliSelection implements SelectionUi
 		}
 		System.out.print( "-- ? " );
 		Integer jarInd = -1; // IMPROVE
+		String jarChosen = "";
 		try
 		{
 			jarInd = input.nextInt();
+			jarChosen = knowsJars.getJarPaths().get( jarInd );
 		}
 		catch ( Exception ugh )
 		{
 			System.err.print( "Grr couldn't make that an int :[ "+ ugh );
 		}
-		String jarChosen = knowsJars.getJarPaths().get( jarInd );
 
 		System.out.println( "Available args:" );
 		ind = 0;
@@ -53,15 +54,16 @@ public class CliSelection implements SelectionUi
 		}
 		System.out.print( "-- ? " );
 		int argInd = -1;
+		String argChosen = "";
 		try
 		{
 			argInd = input.nextInt();
+			argChosen = knowsJars.getJarArgs().get( argInd );
 		}
 		catch ( Exception ugh )
 		{
 			System.err.print( "Grr couldn't make that an int :[ "+ ugh );
 		}
-		String argChosen = knowsJars.getJarArgs().get( argInd );
 
 		reactor.actionPerformed(new ActionEvent( this, 6345,
 				knowsJars.getCombinationReference(

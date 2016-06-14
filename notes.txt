@@ -4,10 +4,9 @@ Notes
 -- remaining
 
 Launcher		inherit io like I expect it to
-ConfigParser	perhaps an extension based enum ? ; is this supposed to be an interface ?
-XmlBasedParser	le sigh
-Argument Store	is there still a role for this now that JarModel has totally supplanted it?
-SwingSelect / JfxSelect 	real event thread and new gui style practice
+XmlBasedParser	handle the parsing event methods ; finish config.xml
+JfxSelect / SwingSelect 	real event thread and new gui style practice
+*merge into earlySkel* then to master
 
 -- selection ui
 

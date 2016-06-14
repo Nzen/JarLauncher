@@ -11,13 +11,17 @@ import java.util.List;
 public class JarModel
 {
 	private List<String> jarPaths; // IMPROVE use a map instead
-	private List<String> jarArgs;
+	private List<String> oldJarArgs;
+
+	private List<String[]> jarLocations;
+	private List<ArgBundle> args;
 	private String jvmLocation = "";
 	private final String separ = ":";
 
 	public JarModel()
 	{
-		throw new UnsupportedOperationException();
+		jarLocations = new LinkedList<String[]>();
+		args = new LinkedList<ArgBundle>();
 	}
 
 	public JarModel( List<String> theJars, List<String> theOptions )
@@ -48,7 +52,7 @@ public class JarModel
 		}
 		ind = 0;
 		String indOfArg = "";
-		for ( String someArg : jarArgs )
+		for ( String someArg : oldJarArgs )
 		{
 			if ( someArg.equals(chosenArgs) )
 			{
@@ -97,34 +101,44 @@ public class JarModel
 			System.err.print( indicies[ 1 ]
 					+" is not a number callee "+ leSigh );
 		}
-		if ( indOfArg < 0 || indOfArg >= jarArgs.size() )
+		if ( indOfArg < 0 || indOfArg >= oldJarArgs.size() )
 			return new String[0];
 		else
-			return jarArgs.get( indOfArg ).split( " " );
+			return oldJarArgs.get( indOfArg ).split( " " );
+	}
+
+	public void addJarLocation( String[] pathDesc )
+	{
+		if ( pathDesc.length == 2 )
+		{
+			jarLocations.add( pathDesc );
+		}
 	}
 
 	public List<String> getJarPaths()
 	{
 		return jarPaths;
 	}
+
 	public List<String> getJarArgs()
 	{
-		return jarArgs;
+		return oldJarArgs;
 	}
 
 	public void setJarPaths( List<String> pJarPaths )
 	{
 		if ( pJarPaths == null )
-			this.jarPaths = new java.util.LinkedList<String>();
+			this.jarPaths = new LinkedList<String>();
 		else
 			this.jarPaths = pJarPaths;
 	}
+
 	public void setJarArgs( List<String> pJarArgs )
 	{
 		if ( pJarArgs == null )
-			this.jarArgs = new java.util.LinkedList<String>();
+			this.oldJarArgs = new LinkedList<String>();
 		else
-			this.jarArgs = pJarArgs;
+			this.oldJarArgs = pJarArgs;
 	}
 
 	public String getJvmLocation()
