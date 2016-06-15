@@ -1,5 +1,7 @@
-
+/usr/bin/java
 <?> a comment
+
+<?> actually is /usr/lib/jvm/java-7-openjdk-amd64/jre/bin/java
 
 <jars>
 ../SplainTime/dist/SplainTime.jar

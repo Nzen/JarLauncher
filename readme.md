@@ -5,7 +5,7 @@ Allows user to select a jar and arguments. *Current work on earlySkeleton branch
 
 ## Motivation ##
 
-We use a number of jars at work with differing arguments. I don't want so shortcuts many on my desktop.
+We use a number of jars at work with differing arguments. I don't want so many shortcuts on my desktop.
 
 ## License ##
 
