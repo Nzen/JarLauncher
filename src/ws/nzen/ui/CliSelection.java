@@ -3,8 +3,11 @@ package ws.nzen.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 import java.util.Scanner;
 
+import ws.nzen.model.ArgBundle;
+import ws.nzen.model.JarLocation;
 import ws.nzen.model.JarModel;
 
 /** shows options via stdin */
@@ -14,8 +17,11 @@ public class CliSelection implements SelectionUi
 	private JarModel knowsJars;
 
 	@Override
+	/** set it or @throws NullPointerException */
 	public void setJarModel( JarModel toBuildUiAround )
 	{
+		if ( toBuildUiAround == null )
+			throw new NullPointerException();
 		knowsJars = toBuildUiAround;
 	}
 
@@ -25,48 +31,28 @@ public class CliSelection implements SelectionUi
 	{
 		Scanner input = new Scanner( System.in );
 		System.out.println( "Available jars:" );
-		int ind = 0;
-		for ( String jarPath : knowsJars.getJarPaths() )
+		for ( Map.Entry<String, JarLocation> keyAndLoc : knowsJars.getLocations() )
 		{
-			System.out.println( ind +" "+ jarPath );
-			ind++;
+			System.out.println( keyAndLoc.getKey() +" - "+ keyAndLoc.getValue().getDesc() );
 		}
 		System.out.print( "-- ? " );
-		Integer jarInd = -1; // IMPROVE
-		String jarChosen = "";
-		try
-		{
-			jarInd = input.nextInt();
-			jarChosen = knowsJars.getJarPaths().get( jarInd );
-		}
-		catch ( Exception ugh )
-		{
-			System.err.print( "Grr couldn't make that an int :[ "+ ugh );
-		}
-
+		String jarIdChosen = input.next();
+		if ( ! knowsJars.locationsHas( jarIdChosen ) )
+			System.err.print( jarIdChosen +" isn't an offered selection. ignored" );
+			// IMPROVE actually handle this
 		System.out.println( "Available args:" );
-		ind = 0;
-		for ( String arg : knowsJars.getJarArgs() )
+		for ( Map.Entry<String, ArgBundle> keyAndLoc : knowsJars.getArgs() )
 		{
-			System.out.println( ind +" "+ arg );
-			ind++;
+			System.out.println( keyAndLoc.getKey() +" - "+ keyAndLoc.getValue().getDesc() );
 		}
 		System.out.print( "-- ? " );
-		int argInd = -1;
-		String argChosen = "";
-		try
-		{
-			argInd = input.nextInt();
-			argChosen = knowsJars.getJarArgs().get( argInd );
-		}
-		catch ( Exception ugh )
-		{
-			System.err.print( "Grr couldn't make that an int :[ "+ ugh );
-		}
+		String argIdChosen = input.next();
+		if ( ! knowsJars.argsHas( argIdChosen ) )
+			System.err.print( argIdChosen +" isn't an offered selection. ignored" );
+			// IMPROVE actually handle this
 
 		reactor.actionPerformed(new ActionEvent( this, 6345,
-				knowsJars.getCombinationReference(
-						jarChosen, argChosen ) ));
+				knowsJars.getComboRef( jarIdChosen, argIdChosen ) ));
 	}
 
 	@Override

@@ -18,21 +18,25 @@ public class XmlBasedParser implements ConfigParser
 	private JarLauncher listener;
 	private Path dataNugget;
 
+	/**  */
 	public XmlBasedParser( Path toConfig )
 	{
 		dataNugget = toConfig;
 	}
 
+	/**  */
 	public void setCompletionListener( JarLauncher tailWaggingTheDog )
 	{
 		listener = tailWaggingTheDog;
 	}
 
+	/**  */
 	public void setPathToConfig( Path aFile )
 	{
 		dataNugget = aFile;
 	}
 
+	/**  */
 	public void parseConfig()
 	{
 		SAXParserFactory makesActualParser = SAXParserFactory.newInstance();
@@ -58,8 +62,11 @@ public class XmlBasedParser implements ConfigParser
 		}
 	}
 
+	/**  */
 	class XmlWorkHorse extends DefaultHandler
 	{
+
+		/**  */
 		public void endDocument()
 		{
 			listener.showOptions( null );

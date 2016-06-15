@@ -1,8 +1,11 @@
 /** see License.md */
 package ws.nzen.model;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author nzen
@@ -10,18 +13,22 @@ import java.util.List;
  */
 public class JarModel
 {
+	@Deprecated
 	private List<String> jarPaths; // IMPROVE use a map instead
+	@Deprecated
 	private List<String> oldJarArgs;
 
-	private List<String[]> jarLocations;
-	private List<ArgBundle> args;
+	private int jlId = 0, argId = 0;
+	private Map<String, JarLocation> jarLocations;
+	private Map<String, ArgBundle> args;
 	private String jvmLocation = "";
 	private final String separ = ":";
 
+	/**  */
 	public JarModel()
 	{
-		jarLocations = new LinkedList<String[]>();
-		args = new LinkedList<ArgBundle>();
+		jarLocations = new HashMap<String, JarLocation>();
+		args = new HashMap<String, ArgBundle>();
 	}
 
 	public JarModel( List<String> theJars, List<String> theOptions )
@@ -37,82 +44,97 @@ public class JarModel
 		setJarArgs( theOptions );
 	}
 
-	public String getCombinationReference( String aPath, String chosenArgs )
+	/**  */
+	public String getComboRef( String locationId, String argBundleId )
 	{
-		String indOfPath = "";
-		int ind = 0;
-		for ( String somePath : jarPaths )
+		boolean validLoc = jarLocations.containsKey( locationId );
+		boolean validArg = args.containsKey( argBundleId );
+		if ( validLoc && validArg )
 		{
-			if ( somePath.equals(aPath) )
-			{
-				indOfPath = Integer.toString(ind);
-				break;
-			}
-			ind++;
+			return locationId + separ + argBundleId;
 		}
-		ind = 0;
-		String indOfArg = "";
-		for ( String someArg : oldJarArgs )
+		else if ( validLoc )
 		{
-			if ( someArg.equals(chosenArgs) )
-			{
-				indOfArg = Integer.toString(ind);
-				break;
-			}
-			ind++;
+			return locationId + separ;
 		}
-		return indOfPath + separ + indOfArg;
-	}
-
-	public String getJarOfComboRef( String combinationReference )
-	{
-		String[] indicies = combinationReference.split( separ );
-		if ( indicies.length < 1 || indicies[0].isEmpty() )
-			return "";
-		int indOfJar = -1;
-		try
+		else if ( validArg )
 		{
-			indOfJar = Integer.parseInt( indicies[ 0 ] );
+			return separ + argBundleId;
 		}
-		catch ( NumberFormatException leSigh )
-		{
-			System.err.print( indicies[ 0 ]
-					+" is not a number callee "+ leSigh );
-		}
-		if ( indOfJar < 0 || indOfJar >= jarPaths.size() )
-			return "";
 		else
-			return jarPaths.get( indOfJar );
+		{
+			return "";
+		}
 	}
 
-	/** comboRef should be \w:\d+ use latter to find the matching arg */
-	public String[] getArgsOfComboRef( String combinationReference )
+	/** what you want or null */
+	public JarLocation getPathOfComboRef( String comboRef )
 	{
-		String[] indicies = combinationReference.split( separ );
-		if ( indicies.length < 2 || indicies[1].isEmpty() )
-			return new String[0];
-		int indOfArg = -1;
-		try
+		if ( comboRef.isEmpty() )
+			return null;
+		String[] indicies = comboRef.split( separ );
+		if (jarLocations.containsKey( indicies[0] ))
 		{
-			indOfArg = Integer.parseInt( indicies[ 1 ] );
+			return jarLocations.get( indicies[0] );
 		}
-		catch ( NumberFormatException leSigh )
-		{
-			System.err.print( indicies[ 1 ]
-					+" is not a number callee "+ leSigh );
-		}
-		if ( indOfArg < 0 || indOfArg >= oldJarArgs.size() )
-			return new String[0];
 		else
-			return oldJarArgs.get( indOfArg ).split( " " );
+		{
+			return null;
+		}
 	}
 
-	public void addJarLocation( String[] pathDesc )
+	/** what you want or null */
+	public ArgBundle getArgOfComboRef( String comboRef )
 	{
-		if ( pathDesc.length == 2 )
+		if ( comboRef.isEmpty() )
+			return null;
+		String[] indicies = comboRef.split( separ );
+		if (args.containsKey( indicies[1] ))
 		{
-			jarLocations.add( pathDesc );
+			return args.get( indicies[1] );
 		}
+		else
+		{
+			return null;
+		}
+	}
+
+	/**  */
+	public void addJarLocation( JarLocation pathDesc )
+	{
+		jarLocations.put( Integer.toString( jlId ), pathDesc );
+		jlId++;
+	}
+
+	/**  */
+	public void addArgBundle( ArgBundle more )
+	{
+		args.put( Integer.toString( argId ), more );
+		argId++;
+	}
+
+	/**  */
+	public Set<Map.Entry<String, JarLocation>> getLocations()
+	{
+		return jarLocations.entrySet();
+	}
+
+	/**  */
+	public Set<Map.Entry<String, ArgBundle>> getArgs()
+	{
+		return args.entrySet();
+	}
+
+	/**  */
+	public boolean locationsHas( String id )
+	{
+		return jarLocations.containsKey( id );
+	}
+
+	/**  */
+	public boolean argsHas( String id )
+	{
+		return args.containsKey( id );
 	}
 
 	public List<String> getJarPaths()

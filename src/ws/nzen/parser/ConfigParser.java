@@ -1,9 +1,11 @@
+/** see License.md */
 package ws.nzen.parser;
 
 import java.nio.file.Path;
 
 import ws.nzen.JarLauncher;
 
+/**  */
 public interface ConfigParser
 {
 

@@ -7,12 +7,17 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
+import ws.nzen.model.ArgBundle;
+import ws.nzen.model.JarLocation;
+
+/**  */
 public class Launcher
 {
 	private Path whereIsJvm;
 	private Path whereIsJar;
 	private String[] args;
 
+	/** old version */
 	public Launcher( Path jvm, String toLaunch, String[] itsArgs )
 	{
 		whereIsJvm = jvm;
@@ -21,6 +26,13 @@ public class Launcher
 		args = itsArgs;
 	}
 
+	/**  */
+	public Launcher( Path jvm, JarLocation toLaunch, ArgBundle itsArgs )
+	{
+		whereIsJvm = jvm;
+	}
+
+	/**  */
 	public void runJar()
 	{
 		List<String> commandComponents = new LinkedList<String>();
@@ -53,6 +65,7 @@ public class Launcher
 		}
 	}
 
+	/**  */
 	private boolean needsIo()
 	{
 		for ( String each : args )

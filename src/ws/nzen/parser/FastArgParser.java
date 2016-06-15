@@ -27,21 +27,25 @@ public class FastArgParser implements ConfigParser
 		fastArgFile = toUse;
 	}
 
+	/**  */
 	public void setCompletionListener( JarLauncher tailWaggingTheDog )
 	{
 		theActualRoot = tailWaggingTheDog;
 	}
 
+	/**  */
 	public void setPathToConfig( Path aFile )
 	{
 		fastArgFile = aFile;
 	}
 
+	/**  */
 	public void parseConfig()
 	{
 		theActualRoot.showOptions( parseToModel() );
 	}
 
+	/**  */
 	public JarModel parseToModel()
 	{
 		List<String> lines = getFileLines();
@@ -69,6 +73,7 @@ public class FastArgParser implements ConfigParser
 		return aggregate;
 	}
 
+	/**  */
 	private List<String> getFileLines()
 	{
 		List<String> fileText = new LinkedList<String>();

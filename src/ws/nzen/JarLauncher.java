@@ -76,8 +76,8 @@ public class JarLauncher implements ActionListener
 		String toUse = userSelection.getActionCommand();
 		Launcher platform = new Launcher(
 				Paths.get( tableOfOptions.getJvmLocation() ),
-				tableOfOptions.getJarOfComboRef(toUse),
-				tableOfOptions.getArgsOfComboRef(toUse) );
+				tableOfOptions.getPathOfComboRef(toUse),
+				tableOfOptions.getArgOfComboRef(toUse) );
 		platform.runJar();
 	}
 

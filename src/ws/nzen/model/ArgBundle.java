@@ -31,9 +31,20 @@ public class ArgBundle
 		return needsIo;
 	}
 
+	/**  */
 	public String getDesc()
 	{
-		return desc;
+		if ( desc.isEmpty() )
+		{
+			String fakeDesc = "";
+			for ( String oneArg : flags )
+			{
+				fakeDesc += " "+ oneArg;
+			}
+			return fakeDesc;
+		}
+		else
+			return desc;
 	}
 
 	public void setFlags( List<String> flags )
@@ -57,30 +68,6 @@ public class ArgBundle
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
