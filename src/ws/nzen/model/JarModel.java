@@ -1,5 +1,5 @@
 /** see License.md */
-package ws.nzen;
+package ws.nzen.model;
 
 import java.util.LinkedList;
 import java.util.List;

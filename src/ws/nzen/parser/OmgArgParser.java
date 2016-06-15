@@ -4,12 +4,13 @@ package ws.nzen.parser;
 import java.util.LinkedList;
 import java.util.List;
 
-import ws.nzen.JarModel;
+import ws.nzen.model.JarModel;
 
 /**
  * @author nzen
  *
  */
+@Deprecated
 public class OmgArgParser
 {
 	private List<String> jarPaths;

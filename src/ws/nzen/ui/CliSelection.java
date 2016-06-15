@@ -5,8 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Scanner;
 
-import ws.nzen.JarModel;
-import ws.nzen.SelectionUi;
+import ws.nzen.model.JarModel;
 
 /** shows options via stdin */
 public class CliSelection implements SelectionUi
