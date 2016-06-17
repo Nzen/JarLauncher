@@ -1,7 +1,7 @@
 
 ## Jar Launcher ##
 
-Allows user to select a jar and arguments. *Current work on earlySkeleton branch*
+Allows user to select a jar and arguments. *Current work on saxBased branch*
 
 ## Motivation ##
 
@@ -10,3 +10,11 @@ We use a number of jars at work with differing arguments. I don't want so many s
 ## License ##
 
 see License.md for license information
+
+### FastArg format ###
+
+(Provisional until I handle a format with higher information density, so I can leave descriptions.) Each line is treated as a data atom. Each prefix determines treatment:
+
+* <v> jvm location
+* <j> jar path
+* <a> arguments for jar
