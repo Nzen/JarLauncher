@@ -38,7 +38,7 @@ public class JarLauncher implements ActionListener
 	/** uses the default argfile to show options */
 	public JarLauncher()
 	{
-		String testFile = "config.fastArg";
+		String testFile = "config.xml";
 		sendToParser( testFile );
 	}
 
@@ -53,6 +53,7 @@ public class JarLauncher implements ActionListener
 	{
 		ConfigParser dataGrinder = ParserFactory.viaExt( filename );
 		dataGrinder.setCompletionListener( this );
+		dataGrinder.parseConfig();
 	}
 
 	/** model is ready, so show that to the user */

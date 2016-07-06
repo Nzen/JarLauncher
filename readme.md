@@ -1,7 +1,7 @@
 
 ## Jar Launcher ##
 
-Allows user to select a jar and arguments. *Current work on saxBased branch*
+Allows user to select a jar and arguments. *saxBased branch* Reading jarlauncher options from an xml file.
 
 ## Motivation ##
 

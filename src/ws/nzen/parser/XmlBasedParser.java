@@ -7,10 +7,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ws.nzen.JarLauncher;
+import ws.nzen.model.JarModel;
 
 public class XmlBasedParser implements ConfigParser
 {
@@ -62,52 +64,223 @@ public class XmlBasedParser implements ConfigParser
 		}
 	}
 
+	enum XmlJarModelState { jvm, jar, path, desc,
+		argB, flag, summary, needsIo, between, outsideJloptions };
+
 	/**  */
 	class XmlWorkHorse extends DefaultHandler
 	{
+		private JarModel assembledInfo;
+		private XmlJarModelState currently;
 
+		public XmlWorkHorse()
+		{
+			assembledInfo = new JarModel();
+			currently = XmlJarModelState.outsideJloptions;
+		}
+
+		@Override
+		/**  */
+		public void startElement(String uri, String localName, String qName, Attributes attributes)
+		{
+			System.out.println( "< start elem : u-"+ uri +" ln-"+ localName +" qn- "+ qName );
+			for ( int ind = 0; ind < attributes.getLength(); ind++ )
+			{
+				System.out.println( "\tAttribute t-"+ attributes.getType( ind ) +" v-"+ attributes.getValue( ind )
+				+" ln-"+ attributes.getLocalName( ind ) +"" );
+			}
+			switch ( currently )
+			{
+			case outsideJloptions :
+			{
+				if ( qName.equals( "jl_options" ) )
+					currently = XmlJarModelState.between;
+			}
+			case jar :
+			{
+				// be path or desc
+			}
+			case argB :
+			{
+				// be flag needsio OR summary
+			}
+			case between :
+			{
+				// be jar OR argb
+			}
+			case jvm :
+			case path :
+			case desc :
+			case flag :
+			case summary :
+			case needsIo :
+			default :
+			{
+				System.err.print( "unexpected xml nesting, ignored" );
+			}
+			}
+			
+		}
+
+		@Override
+		/**  */
+		public void characters(char[] ch, int start, int length)
+		{
+			String strOfVal = new String( ch, start, length );
+			System.out.println( "-curr chars- s:l::"+ start +":"+ length +" |"+ strOfVal +"|" );
+
+			switch ( currently )
+			{
+			case jvm :
+			{
+				// save to jvm
+			}
+			case jar :
+			{
+				// ignore
+			}
+			case path :
+			{
+				// save path
+			}
+			case desc :
+			{
+				// save
+			}
+			case argB :
+			{
+				// ignore
+			}
+			case flag :
+			{
+				// save
+			}
+			case summary :
+			{
+				// save
+			}
+			case needsIo :
+			{
+				// ignore
+			}
+			case between :
+			{
+				// ignore
+			}
+			default :
+			{
+				System.err.print( "unexpected xml nesting, ignored" );
+			}
+			}
+		}
+
+		@Override
+		/**  */
+		public void endElement(String uri, String localName, String qName)
+		{
+			System.out.println( "> end elem : u-"+ uri +" ln-"+ localName +" qn- "+ qName );
+
+			switch ( currently )
+			{
+			case jvm :
+			{
+				// goto betwix
+			}
+			case jar :
+			{
+				// goto betwix
+			}
+			case path :
+			{
+				// goto jar
+			}
+			case desc :
+			{
+				// goto jar
+			}
+			case argB :
+			{
+				// goto betwix
+			}
+			case flag :
+			{
+				// goto argB
+			}
+			case summary :
+			{
+				// goto argB
+			}
+			case needsIo :
+			{
+				// goto argB
+			}
+			case between :
+			{
+				// be jl option
+			}
+			default :
+			{
+				System.err.print( "unexpected xml nesting, ignored" );
+			}
+			}
+		}
+
+		@Override
 		/**  */
 		public void endDocument()
 		{
-			listener.showOptions( null );
+			listener.showOptions( assembledInfo );
 		}
 
-		/*
-		 	characters(char[] ch, int start, int length)
-Receive notification of character data inside an element.
-void 	endDocument()
-Receive notification of the end of the document.
-void 	endElement(String uri, String localName, String qName)
-Receive notification of the end of an element.
-void 	endPrefixMapping(String prefix)
-Receive notification of the end of a Namespace mapping.
-void 	error(SAXParseException e)
-Receive notification of a recoverable parser error.
-void 	fatalError(SAXParseException e)
-Report a fatal XML parsing error.
-void 	ignorableWhitespace(char[] ch, int start, int length)
-Receive notification of ignorable whitespace in element content.
-void 	notationDecl(String name, String publicId, String systemId)
-Receive notification of a notation declaration.
-void 	processingInstruction(String target, String data)
-Receive notification of a processing instruction.
-InputSource 	resolveEntity(String publicId, String systemId)
-Resolve an external entity.
-void 	setDocumentLocator(Locator locator)
-Receive a Locator object for document events.
-void 	skippedEntity(String name)
-Receive notification of a skipped entity.
-void 	startDocument()
-Receive notification of the beginning of the document.
-void 	startElement(String uri, String localName, String qName, Attributes attributes)
-Receive notification of the start of an element.
-void 	startPrefixMapping(String prefix, String uri)
-Receive notification of the start of a Namespace mapping.
-void 	unparsedEntityDecl(String name, String publicId, String systemId, String notationName)
-Receive notification of an unparsed entity declaration.
-void 	warning(SAXParseException e)
-Receive notification of a parser warning.
-		*/
+		// --
+
+		public void fatalError(org.xml.sax.SAXParseException spe)
+		{
+			System.err.print( "fatal error  "+ spe );
+			spe.printStackTrace();
+		}
+
+		public void error(org.xml.sax.SAXParseException spe)
+		{
+			System.err.print( "error "+ spe );
+		}
+
+		public void warning(org.xml.sax.SAXParseException spe)
+		{
+			System.err.print( "warning "+ spe );
+		}
+
+		public void unparsedEntityDecl(String name, String publicId, String systemId, String notationName)
+		{
+			System.out.println( "unparsed element : n-"+ name );
+		}
+
+		// --
+
+		public void startPrefixMapping(String prefix, String uri)
+		{
+			System.out.println( "<start prefix "+ prefix +" u-"+ prefix +">" );
+		}
+
+		public void endPrefixMapping(String prefix)
+		{
+			System.out.println( "<end prefix "+ prefix +">" );
+		}
+
+		public void notationDecl(String name, String publicId, String systemId)
+		{
+			System.out.println( "<notation "+ name +"pub-"+ publicId +" sy-"+ systemId +" >" );
+		}
+
+		public void processingInstruction(String target, String data)
+		{
+			System.out.println( "<process t-"+ target +" d-"+ data +" >" );
+		}
+
+		public void skippedEntity(String name)
+		{
+			System.out.println( "<skipped "+ name +">" );
+		}
 	}
 }
 
