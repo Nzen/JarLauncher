@@ -12,6 +12,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ws.nzen.JarLauncher;
+import ws.nzen.model.ArgBundle;
+import ws.nzen.model.JarLocation;
 import ws.nzen.model.JarModel;
 
 public class XmlBasedParser implements ConfigParser
@@ -71,6 +73,8 @@ public class XmlBasedParser implements ConfigParser
 	class XmlWorkHorse extends DefaultHandler
 	{
 		private JarModel assembledInfo;
+		private ArgBundle argSink;
+		private JarLocation pathSink;
 		private XmlJarModelState currently;
 
 		public XmlWorkHorse()
@@ -83,30 +87,104 @@ public class XmlBasedParser implements ConfigParser
 		/**  */
 		public void startElement(String uri, String localName, String qName, Attributes attributes)
 		{
-			System.out.println( "< start elem : u-"+ uri +" ln-"+ localName +" qn- "+ qName );
-			for ( int ind = 0; ind < attributes.getLength(); ind++ )
-			{
-				System.out.println( "\tAttribute t-"+ attributes.getType( ind ) +" v-"+ attributes.getValue( ind )
-				+" ln-"+ attributes.getLocalName( ind ) +"" );
-			}
 			switch ( currently )
 			{
 			case outsideJloptions :
 			{
 				if ( qName.equals( "jl_options" ) )
 					currently = XmlJarModelState.between;
-			}
-			case jar :
-			{
-				// be path or desc
-			}
-			case argB :
-			{
-				// be flag needsio OR summary
+				break;
 			}
 			case between :
 			{
 				// be jar OR argb
+				if ( qName.equals( "location" ) )
+				{
+					if ( attributes.getLength() > 0
+						&& attributes.getLocalName( 0 ).equals( "type" ) )
+					{
+						if ( attributes.getValue( 0 ).equals( "jvm" ) )
+						{
+							System.out.println( "goto jvm" ); // 4TESTS
+							currently = XmlJarModelState.jvm;
+						}
+						else if ( attributes.getValue( 0 ).equals( "jar" ) )
+						{
+							pathSink = new JarLocation();
+							System.out.println( "goto jar" ); // 4TESTS
+							currently = XmlJarModelState.jar;
+						}
+						else
+						{
+							System.err.println( "unexpected location type" );
+						}
+					}
+					else if ( attributes.getLength() > 0 )
+					{
+						System.err.println( "unexpected location attribute :"
+								+ "\n\tln-"+ attributes.getLocalName( 0 )
+								+" v-"+ attributes.getValue( 0 ) );
+					}
+					else	
+					{
+						System.err.println( "untyped location tag is ambiguous" );
+					}
+				}
+				else if ( qName.equals( "argBundle" ) )
+				{
+					argSink = new ArgBundle();
+					System.out.println( "goto argB" ); // 4TESTS
+					currently = XmlJarModelState.argB;
+				}
+				else
+				{
+					System.err.println( "unexpected main tag : qn-"+ qName );
+				}
+				break;
+			}
+			case jar :
+			{
+				// be path or desc
+				if ( qName.equals( "path" ) )
+				{
+					System.out.println( "goto path" ); // 4TESTS
+					currently = XmlJarModelState.path;
+				}
+				else if ( qName.equals( "desc" ) )
+				{
+					System.out.println( "goto desc" ); // 4TESTS
+					currently = XmlJarModelState.desc;
+				}
+				else
+				{
+					System.err.println( "unexpected sub location tag : qn-"+ qName );
+				}
+				break;
+			}
+			case argB :
+			{
+				// be flag needsio OR summary
+				if ( qName.equals( "flag" ) )
+				{
+					System.out.println( "goto flag" ); // 4TESTS
+					currently = XmlJarModelState.flag;
+				}
+				else if ( qName.equals( "summary" ) )
+				{
+					System.out.println( "goto summary" ); // 4TESTS
+					currently = XmlJarModelState.summary;
+				}
+				else if ( qName.equals( "needsIo" ) )
+				{
+					argSink.setNeedsIo( true );
+					System.out.println( "goto needsIo" ); // 4TESTS
+					currently = XmlJarModelState.needsIo;
+				}
+				else
+				{
+					System.err.println( "unexpected sub argBundle tag : qn-"+ qName );
+				}
+				break;
 			}
 			case jvm :
 			case path :
@@ -116,7 +194,7 @@ public class XmlBasedParser implements ConfigParser
 			case needsIo :
 			default :
 			{
-				System.err.print( "unexpected xml nesting, ignored" );
+				System.err.println( "unexpected xml nesting qn-"+ qName +", ignored" );
 			}
 			}
 			
@@ -127,49 +205,46 @@ public class XmlBasedParser implements ConfigParser
 		public void characters(char[] ch, int start, int length)
 		{
 			String strOfVal = new String( ch, start, length );
-			System.out.println( "-curr chars- s:l::"+ start +":"+ length +" |"+ strOfVal +"|" );
-
 			switch ( currently )
 			{
 			case jvm :
 			{
-				// save to jvm
-			}
-			case jar :
-			{
-				// ignore
+				System.out.println( "save in jvm : "+ strOfVal ); // 4TESTS
+				assembledInfo.setJvmLocation( strOfVal );
+				break;
 			}
 			case path :
 			{
-				// save path
+				System.out.println( "save in path : "+ strOfVal ); // 4TESTS
+				pathSink.setLocation( strOfVal );
+				break;
 			}
 			case desc :
 			{
-				// save
-			}
-			case argB :
-			{
-				// ignore
+				System.out.println( "save in desc : "+ strOfVal ); // 4TESTS
+				pathSink.setDesc( strOfVal );
+				break;
 			}
 			case flag :
 			{
-				// save
+				System.out.println( "save in flag : "+ strOfVal ); // 4TESTS
+				argSink.appendToFlags( strOfVal );
+				break;
 			}
 			case summary :
 			{
-				// save
+				System.out.println( "save in summary : "+ strOfVal ); // 4TESTS
+				argSink.setDesc( strOfVal );
+				break;
 			}
+			case jar :
+			case argB :
 			case needsIo :
-			{
-				// ignore
-			}
 			case between :
-			{
-				// ignore
-			}
 			default :
 			{
-				System.err.print( "unexpected xml nesting, ignored" );
+				// ignore white space
+				// System.err.print( "unexpected xml nesting, ignored" );
 			}
 			}
 		}
@@ -178,49 +253,135 @@ public class XmlBasedParser implements ConfigParser
 		/**  */
 		public void endElement(String uri, String localName, String qName)
 		{
-			System.out.println( "> end elem : u-"+ uri +" ln-"+ localName +" qn- "+ qName );
-
 			switch ( currently )
 			{
 			case jvm :
 			{
 				// goto betwix
+				if ( qName.equals( "location" ) )
+				{
+					System.out.println( "return between" ); // 4TESTS
+					currently = XmlJarModelState.between;
+				}
+				else
+				{
+					System.err.println( "unexpected end tag : qn-"+ qName );
+				}
+				break;
 			}
 			case jar :
 			{
 				// goto betwix
+				if ( qName.equals( "location" ) )
+				{
+					assembledInfo.addJarLocation( new JarLocation(pathSink) );
+					pathSink = null;
+					System.out.println( "return between" ); // 4TESTS
+					currently = XmlJarModelState.between;
+				}
+				else
+				{
+					System.err.println( "unexpected end tag : qn-"+ qName );
+				}
+				break;
 			}
 			case path :
 			{
-				// goto jar
+				if ( qName.equals( "path" ) )
+				{
+					System.out.println( "return jar" ); // 4TESTS
+					currently = XmlJarModelState.jar;
+				}
+				else
+				{
+					System.err.println( "unexpected end tag : qn-"+ qName );
+				}
+				break;
 			}
 			case desc :
 			{
-				// goto jar
+				if ( qName.equals( "desc" ) )
+				{
+					System.out.println( "return jar" ); // 4TESTS
+					currently = XmlJarModelState.jar;
+				}
+				else
+				{
+					System.err.println( "unexpected end tag : qn-"+ qName );
+				}
+				break;
 			}
 			case argB :
 			{
-				// goto betwix
+				if ( qName.equals( "argBundle" ) )
+				{
+					System.out.println( "return between" ); // 4TESTS
+					assembledInfo.addArgBundle( new ArgBundle(argSink) );
+					argSink = null;
+					currently = XmlJarModelState.between;
+				}
+				else
+				{
+					System.err.println( "unexpected end tag : qn-"+ qName );
+				}
+				break;
 			}
 			case flag :
 			{
-				// goto argB
+				if ( qName.equals( "flag" ) )
+				{
+					System.out.println( "return argB" ); // 4TESTS
+					currently = XmlJarModelState.argB;
+				}
+				else
+				{
+					System.err.println( "unexpected end tag : qn-"+ qName );
+				}
+				break;
 			}
 			case summary :
 			{
-				// goto argB
+				System.out.println( "return argB" ); // 4TESTS
+				if ( qName.equals( "summary" ) )
+				{
+					currently = XmlJarModelState.argB;
+				}
+				else
+				{
+					System.err.println( "unexpected end tag : qn-"+ qName );
+				}
+				break;
 			}
 			case needsIo :
 			{
-				// goto argB
+				if ( qName.equals( "needsIo" ) )
+				{
+					System.out.println( "return argB" ); // 4TESTS
+					currently = XmlJarModelState.argB;
+				}
+				else
+				{
+					System.err.println( "unexpected end tag : qn-"+ qName );
+				}
+				break;
 			}
 			case between :
 			{
 				// be jl option
+				if ( qName.equals( "jl_options" ) )
+				{
+					System.out.println( "return outsideJloptions" ); // 4TESTS
+					currently = XmlJarModelState.outsideJloptions;
+				}
+				else
+				{
+					System.err.println( "unexpected end tag : qn-"+ qName );
+				}
+				break;
 			}
 			default :
 			{
-				System.err.print( "unexpected xml nesting, ignored" );
+				System.err.println( "unexpected xml nesting, ignored" );
 			}
 			}
 		}

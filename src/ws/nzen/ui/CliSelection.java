@@ -31,7 +31,7 @@ public class CliSelection implements SelectionUi
 	{
 		Scanner input = new Scanner( System.in );
 		System.out.println( "Available jars:" );
-		for ( Map.Entry<String, JarLocation> keyAndLoc : knowsJars.getLocations() )
+		for ( Map.Entry<String, JarLocation> keyAndLoc : knowsJars.getLocations() ) // FIX use iterators instead
 		{
 			System.out.println( keyAndLoc.getKey() +" - "+ keyAndLoc.getValue().getDesc() );
 		}

@@ -11,6 +11,11 @@ public class JarLocation
 	private String location;
 	private String desc;
 
+	public JarLocation()
+	{
+		
+	}
+
 	public JarLocation( String where )
 	{
 		location = where;
@@ -21,6 +26,13 @@ public class JarLocation
 	{
 		location = where;
 		desc = asWhat;
+	}
+
+	/** deep clone */
+	public JarLocation( JarLocation toClone )
+	{
+		location = new String( toClone.getLocation() );
+		desc = new String( toClone.getDesc() );
 	}
 
 	public String getLocation()

@@ -4,6 +4,7 @@ package ws.nzen;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,7 +16,9 @@ public class Launcher
 {
 	private Path whereIsJvm;
 	private Path whereIsJar;
-	private String[] args;
+	private String[] argsOld;
+	private List<String> fargs;
+	private ArgBundle args;
 
 	/** old version */
 	public Launcher( Path jvm, String toLaunch, String[] itsArgs )
@@ -23,13 +26,16 @@ public class Launcher
 		whereIsJvm = jvm;
 		whereIsJar = Paths.get( toLaunch ).toAbsolutePath();
 		// throws InvalidPathException - if the path string cannot be converted to a Path
-		args = itsArgs;
+		argsOld = itsArgs;
+		fargs = new java.util.ArrayList<String>();
 	}
 
 	/**  */
 	public Launcher( Path jvm, JarLocation toLaunch, ArgBundle itsArgs )
 	{
 		whereIsJvm = jvm;
+		whereIsJar = Paths.get( toLaunch.getLocation() ).toAbsolutePath();
+		args = itsArgs;
 	}
 
 	/**  */
@@ -39,19 +45,14 @@ public class Launcher
 		commandComponents.add( whereIsJvm.toString() );
 		commandComponents.add( "-jar" );
 		commandComponents.add( whereIsJar.getFileName().toString() );
-		// System.out.println( whereIsJar.toString() ); // 4TESTS
-			// FIX cheating for now. have the model split these
-		for ( String currArg : args )
-		{
-			commandComponents.add( currArg );
-		}
+		commandComponents.addAll( args.getFlags() );
 		ProcessBuilder yourJar = new ProcessBuilder( commandComponents );
 		yourJar.directory( whereIsJar.getParent().toFile() );
 
 		/*for ( String arg : commandComponents )
 			System.out.print( " "+ arg );  // also 4TESTS */
 
-		if ( needsIo() )
+		if ( args.isNeedsIo() )
 		{
 			yourJar.inheritIO();
 		}
@@ -63,16 +64,6 @@ public class Launcher
 		{
 			System.err.println( "Couldn't launch jar because "+ ie.toString() );
 		}
-	}
-
-	/**  */
-	private boolean needsIo()
-	{
-		for ( String each : args )
-			if (each.equals( "-debug" )) // eventually do something more robust
-				return true;
-		// else
-		return false;
 	}
 
 }

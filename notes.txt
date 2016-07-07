@@ -6,7 +6,7 @@ Notes
 Launcher		accept and use JarLoc / ArgBundle, javadoc
 FastArgParser	create jarmod from ArgBundle
  [test all this]
-XmlBasedParser	handle the parsing event methods
+XmlBasedParser	handle the parsing event methods ; check dtd messes the parsing state
 JarModel		rename, remove javaPaths, javadoc
 JfxSelect / SwingSelect 	real event thread and new gui style practice
 CliSelection	handle bad user input, javadoc
