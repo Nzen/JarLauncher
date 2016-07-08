@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jl_options PUBLIC
+	"jarlauncher" "config.dtd">
 <jl_options>
 	<location type="jvm">/usr/bin/java</location>
 	<!-- jars -->

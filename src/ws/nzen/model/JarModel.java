@@ -73,7 +73,8 @@ public class JarModel
 		if ( comboRef.isEmpty() )
 			return null;
 		String[] indicies = comboRef.split( separ );
-		if (jarLocations.containsKey( indicies[0] ))
+		if (indicies.length > 0
+				&& jarLocations.containsKey( indicies[0] ))
 		{
 			return jarLocations.get( indicies[0] );
 		}
@@ -89,7 +90,8 @@ public class JarModel
 		if ( comboRef.isEmpty() )
 			return null;
 		String[] indicies = comboRef.split( separ );
-		if (args.containsKey( indicies[1] ))
+		if ( indicies.length > 1
+			&& args.containsKey( indicies[1] ))
 		{
 			return args.get( indicies[1] );
 		}
@@ -116,7 +118,7 @@ public class JarModel
 	/**  */
 	public Set<Map.Entry<String, JarLocation>> getLocations()
 	{
-		return jarLocations.entrySet();
+		return jarLocations.entrySet(); // IMPROVE use an iterator instead
 	}
 
 	/**  */

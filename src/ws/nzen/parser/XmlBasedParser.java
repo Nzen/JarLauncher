@@ -22,25 +22,23 @@ public class XmlBasedParser implements ConfigParser
 	private JarLauncher listener;
 	private Path dataNugget;
 
-	/**  */
+	/** prep with file to read */
 	public XmlBasedParser( Path toConfig )
 	{
 		dataNugget = toConfig;
 	}
 
-	/**  */
 	public void setCompletionListener( JarLauncher tailWaggingTheDog )
 	{
 		listener = tailWaggingTheDog;
 	}
 
-	/**  */
 	public void setPathToConfig( Path aFile )
 	{
 		dataNugget = aFile;
 	}
 
-	/**  */
+	/** event driven parse ; should call listener when finished */
 	public void parseConfig()
 	{
 		SAXParserFactory makesActualParser = SAXParserFactory.newInstance();
@@ -69,7 +67,7 @@ public class XmlBasedParser implements ConfigParser
 	enum XmlJarModelState { jvm, jar, path, desc,
 		argB, flag, summary, needsIo, between, outsideJloptions };
 
-	/**  */
+	/** Builds a JarModel from xml with the expected dtd via dsm */
 	class XmlWorkHorse extends DefaultHandler
 	{
 		private JarModel assembledInfo;
@@ -84,7 +82,7 @@ public class XmlBasedParser implements ConfigParser
 		}
 
 		@Override
-		/**  */
+		/** transition state, maybe prep element to receive data */
 		public void startElement(String uri, String localName, String qName, Attributes attributes)
 		{
 			switch ( currently )
@@ -105,13 +103,11 @@ public class XmlBasedParser implements ConfigParser
 					{
 						if ( attributes.getValue( 0 ).equals( "jvm" ) )
 						{
-							System.out.println( "goto jvm" ); // 4TESTS
 							currently = XmlJarModelState.jvm;
 						}
 						else if ( attributes.getValue( 0 ).equals( "jar" ) )
 						{
 							pathSink = new JarLocation();
-							System.out.println( "goto jar" ); // 4TESTS
 							currently = XmlJarModelState.jar;
 						}
 						else
@@ -133,7 +129,6 @@ public class XmlBasedParser implements ConfigParser
 				else if ( qName.equals( "argBundle" ) )
 				{
 					argSink = new ArgBundle();
-					System.out.println( "goto argB" ); // 4TESTS
 					currently = XmlJarModelState.argB;
 				}
 				else
@@ -147,12 +142,10 @@ public class XmlBasedParser implements ConfigParser
 				// be path or desc
 				if ( qName.equals( "path" ) )
 				{
-					System.out.println( "goto path" ); // 4TESTS
 					currently = XmlJarModelState.path;
 				}
 				else if ( qName.equals( "desc" ) )
 				{
-					System.out.println( "goto desc" ); // 4TESTS
 					currently = XmlJarModelState.desc;
 				}
 				else
@@ -166,18 +159,15 @@ public class XmlBasedParser implements ConfigParser
 				// be flag needsio OR summary
 				if ( qName.equals( "flag" ) )
 				{
-					System.out.println( "goto flag" ); // 4TESTS
 					currently = XmlJarModelState.flag;
 				}
 				else if ( qName.equals( "summary" ) )
 				{
-					System.out.println( "goto summary" ); // 4TESTS
 					currently = XmlJarModelState.summary;
 				}
 				else if ( qName.equals( "needsIo" ) )
 				{
 					argSink.setNeedsIo( true );
-					System.out.println( "goto needsIo" ); // 4TESTS
 					currently = XmlJarModelState.needsIo;
 				}
 				else
@@ -201,7 +191,7 @@ public class XmlBasedParser implements ConfigParser
 		}
 
 		@Override
-		/**  */
+		/** save data */
 		public void characters(char[] ch, int start, int length)
 		{
 			String strOfVal = new String( ch, start, length );
@@ -209,31 +199,26 @@ public class XmlBasedParser implements ConfigParser
 			{
 			case jvm :
 			{
-				System.out.println( "save in jvm : "+ strOfVal ); // 4TESTS
 				assembledInfo.setJvmLocation( strOfVal );
 				break;
 			}
 			case path :
 			{
-				System.out.println( "save in path : "+ strOfVal ); // 4TESTS
 				pathSink.setLocation( strOfVal );
 				break;
 			}
 			case desc :
 			{
-				System.out.println( "save in desc : "+ strOfVal ); // 4TESTS
 				pathSink.setDesc( strOfVal );
 				break;
 			}
 			case flag :
 			{
-				System.out.println( "save in flag : "+ strOfVal ); // 4TESTS
 				argSink.appendToFlags( strOfVal );
 				break;
 			}
 			case summary :
 			{
-				System.out.println( "save in summary : "+ strOfVal ); // 4TESTS
 				argSink.setDesc( strOfVal );
 				break;
 			}
@@ -243,24 +228,22 @@ public class XmlBasedParser implements ConfigParser
 			case between :
 			default :
 			{
-				// ignore white space
-				// System.err.print( "unexpected xml nesting, ignored" );
+				if ( ! strOfVal.trim().isEmpty() )
+					System.err.print( "unexpected text "+ strOfVal +", ignored" );
 			}
 			}
 		}
 
 		@Override
-		/**  */
+		/** transition state ; maybe post accumulated data to the model */
 		public void endElement(String uri, String localName, String qName)
 		{
 			switch ( currently )
 			{
 			case jvm :
 			{
-				// goto betwix
 				if ( qName.equals( "location" ) )
 				{
-					System.out.println( "return between" ); // 4TESTS
 					currently = XmlJarModelState.between;
 				}
 				else
@@ -271,12 +254,10 @@ public class XmlBasedParser implements ConfigParser
 			}
 			case jar :
 			{
-				// goto betwix
 				if ( qName.equals( "location" ) )
 				{
 					assembledInfo.addJarLocation( new JarLocation(pathSink) );
 					pathSink = null;
-					System.out.println( "return between" ); // 4TESTS
 					currently = XmlJarModelState.between;
 				}
 				else
@@ -289,7 +270,6 @@ public class XmlBasedParser implements ConfigParser
 			{
 				if ( qName.equals( "path" ) )
 				{
-					System.out.println( "return jar" ); // 4TESTS
 					currently = XmlJarModelState.jar;
 				}
 				else
@@ -302,7 +282,6 @@ public class XmlBasedParser implements ConfigParser
 			{
 				if ( qName.equals( "desc" ) )
 				{
-					System.out.println( "return jar" ); // 4TESTS
 					currently = XmlJarModelState.jar;
 				}
 				else
@@ -315,7 +294,6 @@ public class XmlBasedParser implements ConfigParser
 			{
 				if ( qName.equals( "argBundle" ) )
 				{
-					System.out.println( "return between" ); // 4TESTS
 					assembledInfo.addArgBundle( new ArgBundle(argSink) );
 					argSink = null;
 					currently = XmlJarModelState.between;
@@ -330,7 +308,6 @@ public class XmlBasedParser implements ConfigParser
 			{
 				if ( qName.equals( "flag" ) )
 				{
-					System.out.println( "return argB" ); // 4TESTS
 					currently = XmlJarModelState.argB;
 				}
 				else
@@ -341,7 +318,6 @@ public class XmlBasedParser implements ConfigParser
 			}
 			case summary :
 			{
-				System.out.println( "return argB" ); // 4TESTS
 				if ( qName.equals( "summary" ) )
 				{
 					currently = XmlJarModelState.argB;
@@ -356,7 +332,6 @@ public class XmlBasedParser implements ConfigParser
 			{
 				if ( qName.equals( "needsIo" ) )
 				{
-					System.out.println( "return argB" ); // 4TESTS
 					currently = XmlJarModelState.argB;
 				}
 				else
@@ -367,10 +342,8 @@ public class XmlBasedParser implements ConfigParser
 			}
 			case between :
 			{
-				// be jl option
 				if ( qName.equals( "jl_options" ) )
 				{
-					System.out.println( "return outsideJloptions" ); // 4TESTS
 					currently = XmlJarModelState.outsideJloptions;
 				}
 				else
@@ -387,7 +360,7 @@ public class XmlBasedParser implements ConfigParser
 		}
 
 		@Override
-		/**  */
+		/** tell the listener that we're done */
 		public void endDocument()
 		{
 			listener.showOptions( assembledInfo );
