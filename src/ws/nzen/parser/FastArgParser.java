@@ -10,6 +10,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ws.nzen.JarLauncher;
+import ws.nzen.model.ArgBundle;
+import ws.nzen.model.JarLocation;
 import ws.nzen.model.JarModel;
 
 /**
@@ -25,6 +27,7 @@ public class FastArgParser implements ConfigParser
 	public FastArgParser( Path toUse )
 	{
 		fastArgFile = toUse;
+		aggregate = new JarModel();
 	}
 
 	/**  */
@@ -48,12 +51,9 @@ public class FastArgParser implements ConfigParser
 	/**  */
 	public JarModel parseToModel()
 	{
-		List<String> lines = getFileLines();
 		String jvm = "";
-		List<String> jars = new LinkedList<String>();
-		List<String> args = new LinkedList<String>();
 		final int tagLen = "<_>".length(); 
-		for ( String temp : lines )
+		for ( String temp : getFileLines() )
 		{
 			if ( temp.startsWith( "<v>" ) )
 			{
@@ -61,16 +61,31 @@ public class FastArgParser implements ConfigParser
 			}
 			else if ( temp.startsWith( "<j>" ) )
 			{
-				jars.add( temp.substring( tagLen ) );
+				aggregate.addJarLocation( new JarLocation(temp.substring( tagLen )) );
 			}
 			else if ( temp.startsWith( "<a>" ) )
 			{
-				args.add( temp.substring( tagLen ) );
+				ArgBundle separatedArgs = new ArgBundle();
+				temp = temp.substring( tagLen );
+				// I've needed to be opinionated to salvage this data format
+				if ( temp.contains( "-debug" ) )
+					separatedArgs.isNeedsIo();
+				for ( String flag : temp.split( " " ) )
+					separatedArgs.appendToFlags( flag );
+				aggregate.addArgBundle( separatedArgs );
 			}
 			// else ignore
 		}
-		aggregate = new JarModel( jvm, jars, args );
-		return aggregate;
+		if ( jvm.isEmpty() )
+		{
+			System.err.println( "fastArgs file didn't have a jvm location, quitting" );
+			System.exit( 1 );
+			return null; // unreachable
+		}
+		else
+		{
+			return aggregate;
+		}
 	}
 
 	/**  */

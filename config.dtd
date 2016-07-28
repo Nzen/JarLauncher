@@ -1,12 +1,10 @@
-<!DOCTYPE jl_options
-[
 <!ELEMENT jl_options (location+, argBundle*)>
-<!ELEMENT location (desc?, path)>
+<!ELEMENT location (desc?, path, tuner*)>
 <!ATTLIST location type (jvm|jar) "jar">
 <!ELEMENT path (#PCDATA)>
 <!ELEMENT desc (#PCDATA)>
-<!ELEMENT argBundle (summary?, flag*, needsIo?)>
+<!ELEMENT tuner (#PCDATA)>
+<!ELEMENT argBundle (summary?, flag+, needsIo?)>
 <!ELEMENT summary (#PCDATA)>
 <!ELEMENT flag (#PCDATA)>
 <!ELEMENT needsIo EMPTY>
-]>

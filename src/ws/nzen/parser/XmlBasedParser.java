@@ -64,7 +64,7 @@ public class XmlBasedParser implements ConfigParser
 		}
 	}
 
-	enum XmlJarModelState { jvm, jar, path, desc,
+	enum XmlJarModelState { jvm, jar, path, desc, tuner,
 		argB, flag, summary, needsIo, between, outsideJloptions };
 
 	/** Builds a JarModel from xml with the expected dtd via dsm */
@@ -148,6 +148,10 @@ public class XmlBasedParser implements ConfigParser
 				{
 					currently = XmlJarModelState.desc;
 				}
+				else if ( qName.equals( "tuner" ) )
+				{
+					currently = XmlJarModelState.tuner;
+				}
 				else
 				{
 					System.err.println( "unexpected sub location tag : qn-"+ qName );
@@ -177,6 +181,7 @@ public class XmlBasedParser implements ConfigParser
 				break;
 			}
 			case jvm :
+			case tuner :
 			case path :
 			case desc :
 			case flag :
@@ -184,6 +189,7 @@ public class XmlBasedParser implements ConfigParser
 			case needsIo :
 			default :
 			{
+				// ie, these won't have an element inside of them
 				System.err.println( "unexpected xml nesting qn-"+ qName +", ignored" );
 			}
 			}
@@ -212,6 +218,11 @@ public class XmlBasedParser implements ConfigParser
 				pathSink.setDesc( strOfVal );
 				break;
 			}
+			case tuner :
+			{
+				pathSink.appendTuner( strOfVal );
+				break;
+			}
 			case flag :
 			{
 				argSink.appendToFlags( strOfVal );
@@ -229,7 +240,8 @@ public class XmlBasedParser implements ConfigParser
 			default :
 			{
 				if ( ! strOfVal.trim().isEmpty() )
-					System.err.print( "unexpected text "+ strOfVal +", ignored" );
+					System.err.print( "unexpected text "+ strOfVal
+							+" during "+ currently +", ignored" );
 			}
 			}
 		}
@@ -242,14 +254,8 @@ public class XmlBasedParser implements ConfigParser
 			{
 			case jvm :
 			{
-				if ( qName.equals( "location" ) )
-				{
-					currently = XmlJarModelState.between;
-				}
-				else
-				{
-					System.err.println( "unexpected end tag : qn-"+ qName );
-				}
+				currently = shouldBeEnd( qName, "location", currently,
+						XmlJarModelState.between );
 				break;
 			}
 			case jar :
@@ -268,26 +274,20 @@ public class XmlBasedParser implements ConfigParser
 			}
 			case path :
 			{
-				if ( qName.equals( "path" ) )
-				{
-					currently = XmlJarModelState.jar;
-				}
-				else
-				{
-					System.err.println( "unexpected end tag : qn-"+ qName );
-				}
+				currently = shouldBeEnd( qName, "path", currently,
+						XmlJarModelState.jar );
 				break;
 			}
 			case desc :
 			{
-				if ( qName.equals( "desc" ) )
-				{
-					currently = XmlJarModelState.jar;
-				}
-				else
-				{
-					System.err.println( "unexpected end tag : qn-"+ qName );
-				}
+				currently = shouldBeEnd( qName, "desc", currently,
+						XmlJarModelState.jar );
+				break;
+			}
+			case tuner :
+			{
+				currently = shouldBeEnd( qName, "tuner", currently,
+						XmlJarModelState.jar );
 				break;
 			}
 			case argB :
@@ -306,57 +306,42 @@ public class XmlBasedParser implements ConfigParser
 			}
 			case flag :
 			{
-				if ( qName.equals( "flag" ) )
-				{
-					currently = XmlJarModelState.argB;
-				}
-				else
-				{
-					System.err.println( "unexpected end tag : qn-"+ qName );
-				}
+				currently = shouldBeEnd( qName, "flag", currently,
+						XmlJarModelState.argB );
 				break;
 			}
 			case summary :
 			{
-				if ( qName.equals( "summary" ) )
-				{
-					currently = XmlJarModelState.argB;
-				}
-				else
-				{
-					System.err.println( "unexpected end tag : qn-"+ qName );
-				}
+				currently = shouldBeEnd( qName, "summary", currently,
+						XmlJarModelState.argB );
 				break;
 			}
 			case needsIo :
 			{
-				if ( qName.equals( "needsIo" ) )
-				{
-					currently = XmlJarModelState.argB;
-				}
-				else
-				{
-					System.err.println( "unexpected end tag : qn-"+ qName );
-				}
-				break;
-			}
-			case between :
-			{
-				if ( qName.equals( "jl_options" ) )
-				{
-					currently = XmlJarModelState.outsideJloptions;
-				}
-				else
-				{
-					System.err.println( "unexpected end tag : qn-"+ qName );
-				}
+				currently = shouldBeEnd( qName, "needsIo", currently,
+						XmlJarModelState.argB );
 				break;
 			}
 			default :
 			{
-				System.err.println( "unexpected xml nesting, ignored" );
+				System.err.println( "unexpected xml end nesting qn-"
+						+ qName +", ignored" );
 			}
 			}
+		}
+
+		private XmlJarModelState shouldBeEnd( String is, String expect,
+				XmlJarModelState during, XmlJarModelState becomes )
+		{
+			if ( is.equals( expect ) )
+			{
+				during = becomes;
+			}
+			else
+			{
+				System.err.println( "unexpected end tag : qn-"+ is );
+			}
+			return during;
 		}
 
 		@Override

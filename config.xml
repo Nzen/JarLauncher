@@ -7,6 +7,7 @@
 	<location type="jar">
 		<path>../SplainTime/dist/SplainTime.jar</path>
 		<desc>Splaintime in the splaintime folder</desc>
+		<tuner>-XX:NewSize=128m</tuner>
 	</location>
 	<location type="jar">
 		<path>C:/Users/Nicholas/Downloads/SplainTime.jar</path>
@@ -15,6 +16,7 @@
 	<location type="jar">
 		<path>dist/JarLauncher.jar</path>
 		<desc>what's the base case on this recursion ?</desc>
+		<tuner>-jamvm</tuner>
 	</location>
 	<!-- args -->
 	<argBundle>

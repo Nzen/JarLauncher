@@ -2,6 +2,7 @@
 package ws.nzen.model;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -115,16 +116,24 @@ public class JarModel
 		argId++;
 	}
 
-	/**  */
-	public Set<Map.Entry<String, JarLocation>> getLocations()
+	public Iterator<Map.Entry<String, JarLocation>> getLocations()
 	{
-		return jarLocations.entrySet(); // IMPROVE use an iterator instead
+		return jarLocations.entrySet().iterator();
 	}
 
-	/**  */
-	public Set<Map.Entry<String, ArgBundle>> getArgs()
+	public int numberOfLocations()
 	{
-		return args.entrySet();
+		return jarLocations.size();
+	}
+
+	public Iterator<Map.Entry<String, ArgBundle>> getArgs()
+	{
+		return args.entrySet().iterator();
+	}
+
+	public int numberOfArgBundles()
+	{
+		return args.size();
 	}
 
 	/**  */

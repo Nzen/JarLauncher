@@ -25,7 +25,7 @@ public class ArgBundle
 	/** deep clone */
 	public ArgBundle( ArgBundle toClone )
 	{
-		flags = new java.util.ArrayList<String>( toClone.getFlags().size() );
+		flags = new java.util.ArrayList<String>( toClone.numberOfFlags() );
 		for ( String flag : toClone.getFlags() )
 		{
 			flags.add( new String( flag ) );
@@ -68,6 +68,11 @@ public class ArgBundle
 	public void appendToFlags( String another )
 	{
 		flags.add( another );
+	}
+
+	public int numberOfFlags()
+	{
+		return flags.size();
 	}
 
 	public void setNeedsIo( boolean needsIo )
