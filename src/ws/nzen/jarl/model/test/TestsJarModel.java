@@ -1,4 +1,4 @@
-package ws.nzen.model.test;
+package ws.nzen.jarl.model.test;
 
 import static org.junit.Assert.fail;
 

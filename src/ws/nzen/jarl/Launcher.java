@@ -1,5 +1,5 @@
 /** see License.md */
-package ws.nzen;
+package ws.nzen.jarl;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -9,8 +9,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import ws.nzen.model.ArgBundle;
-import ws.nzen.model.JarLocation;
+import ws.nzen.jarl.model.ArgBundle;
+import ws.nzen.jarl.model.JarLocation;
 
 /**  */
 public class Launcher

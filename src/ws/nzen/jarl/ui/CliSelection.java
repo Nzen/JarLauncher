@@ -1,5 +1,5 @@
 /** see License.md */
-package ws.nzen.ui;
+package ws.nzen.jarl.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,9 +7,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
 
-import ws.nzen.model.ArgBundle;
-import ws.nzen.model.JarLocation;
-import ws.nzen.model.JarModel;
+import ws.nzen.jarl.model.ArgBundle;
+import ws.nzen.jarl.model.JarLocation;
+import ws.nzen.jarl.model.JarModel;
 
 /** shows options via stdin */
 public class CliSelection implements SelectionUi

@@ -1,5 +1,5 @@
 /** see License.md */
-package ws.nzen.parser;
+package ws.nzen.jarl.parser;
 
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;

@@ -1,4 +1,4 @@
-package ws.nzen.parser;
+package ws.nzen.jarl.parser;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -11,10 +11,10 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import ws.nzen.JarLauncher;
-import ws.nzen.model.ArgBundle;
-import ws.nzen.model.JarLocation;
-import ws.nzen.model.JarModel;
+import ws.nzen.jarl.JarLauncher;
+import ws.nzen.jarl.model.ArgBundle;
+import ws.nzen.jarl.model.JarLocation;
+import ws.nzen.jarl.model.JarModel;
 
 public class XmlBasedParser implements ConfigParser
 {

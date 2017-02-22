@@ -1,15 +1,15 @@
 /** see License.md */
-package ws.nzen;
+package ws.nzen.jarl;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.nio.file.Paths;
 
-import ws.nzen.model.JarModel;
-import ws.nzen.parser.ConfigParser;
-import ws.nzen.parser.ParserFactory;
-import ws.nzen.ui.CliSelection;
-import ws.nzen.ui.SelectionUi;
+import ws.nzen.jarl.model.JarModel;
+import ws.nzen.jarl.parser.ConfigParser;
+import ws.nzen.jarl.parser.ParserFactory;
+import ws.nzen.jarl.ui.CliSelection;
+import ws.nzen.jarl.ui.SelectionUi;
 
 /**
  * @author nzen

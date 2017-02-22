@@ -20,7 +20,7 @@ jar
 {
 	manifest
 	{
-		attributes 'Main-Class': 'ws.nzen.JarLauncher'
+		attributes 'Main-Class': 'ws.nzen.jarl.JarLauncher'
 	}
 }
 

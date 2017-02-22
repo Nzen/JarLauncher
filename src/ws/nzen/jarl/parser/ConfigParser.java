@@ -1,9 +1,9 @@
 /** see License.md */
-package ws.nzen.parser;
+package ws.nzen.jarl.parser;
 
 import java.nio.file.Path;
 
-import ws.nzen.JarLauncher;
+import ws.nzen.jarl.JarLauncher;
 
 /**  */
 public interface ConfigParser

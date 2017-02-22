@@ -1,10 +1,10 @@
 /** see License.md */
 
-package ws.nzen.ui;
+package ws.nzen.jarl.ui;
 
 import java.awt.event.ActionListener;
 
-import ws.nzen.model.JarModel;
+import ws.nzen.jarl.model.JarModel;
 
 /**  */
 public interface SelectionUi

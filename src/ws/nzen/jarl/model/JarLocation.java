@@ -1,5 +1,5 @@
 /** see License.md */
-package ws.nzen.model;
+package ws.nzen.jarl.model;
 
 import java.util.Iterator;
 import java.util.List;
