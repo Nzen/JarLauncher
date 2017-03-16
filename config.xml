@@ -18,6 +18,54 @@
 		<desc>what's the base case on this recursion ?</desc>
 		<tuner>-jamvm</tuner>
 	</location>
+
+
+	<location type="jar">
+		<path>dist/JarLauncher.jar</path>
+		<desc>what's the base case on this recursion ?</desc>
+		<tuner>-jamvm</tuner>
+	</location>
+	<location type="jar">
+		<path>dist/JarLauncher.jar</path>
+		<desc>what's the base case on this recursion ?</desc>
+		<tuner>-jamvm</tuner>
+	</location>
+	<location type="jar">
+		<path>dist/JarLauncher.jar</path>
+		<desc>what's the base case on this recursion ?</desc>
+		<tuner>-jamvm</tuner>
+	</location>
+	<location type="jar">
+		<path>dist/JarLauncher.jar</path>
+		<desc>what's the base case on this recursion ?</desc>
+		<tuner>-jamvm</tuner>
+	</location>
+	<location type="jar">
+		<path>dist/JarLauncher.jar</path>
+		<desc>what's the base case on this recursion ?</desc>
+		<tuner>-jamvm</tuner>
+	</location>
+	<location type="jar">
+		<path>dist/JarLauncher.jar</path>
+		<desc>what's the base case on this recursion ?</desc>
+		<tuner>-jamvm</tuner>
+	</location>
+	<location type="jar">
+		<path>dist/JarLauncher.jar</path>
+		<desc>what's the base case on this recursion ?</desc>
+		<tuner>-jamvm</tuner>
+	</location>
+	<location type="jar">
+		<path>dist/JarLauncher.jar</path>
+		<desc>what's the base case on this recursion ?</desc>
+		<tuner>-jamvm</tuner>
+	</location>
+	<location type="jar">
+		<path>dist/JarLauncher.jar</path>
+		<desc>what's the base case on this recursion ?</desc>
+		<tuner>-jamvm</tuner>
+	</location>
+
 	<!-- args -->
 	<argBundle>
 		<flag>-h</flag>

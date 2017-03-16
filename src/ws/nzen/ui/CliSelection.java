@@ -3,6 +3,7 @@ package ws.nzen.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
@@ -42,7 +43,6 @@ public class CliSelection implements SelectionUi
 
 	private String getJarId( Scanner input )
 	{
-		String jarIdChosen;
 		if ( knowsJars.numberOfLocations() < 1 )
 		{
 			System.err.print( "Config doesn't have any jar locations. Quitting" );
@@ -55,14 +55,30 @@ public class CliSelection implements SelectionUi
 		else
 		{
 			System.out.println( "Available jars:" );
+			Map<Integer, String> viewToLocation = new HashMap<>(
+					knowsJars.numberOfLocations() );
 			Iterator<Map.Entry<String, JarLocation>> keyChain = knowsJars.getLocations();
-			while ( keyChain.hasNext() )
+			for ( Integer ind = 0; keyChain.hasNext(); ind++ )
 			{
 				Map.Entry<String, JarLocation> keyAndLoc = keyChain.next();
-				System.out.println( keyAndLoc.getKey() +" - "+ keyAndLoc.getValue().getDesc() );
+				viewToLocation.put( ind, keyAndLoc.getKey() );
+				System.out.println( String.format( "%02d", ind )
+						+" - "+ keyAndLoc.getValue().getDesc() );
 			}
 			System.out.print( "-- ? " );
-			jarIdChosen = input.next();
+			Integer userChose = null;
+			String literalInput = input.next();
+			try
+			{
+				userChose = Integer.parseInt( literalInput );
+			}
+			catch ( NumberFormatException nfe )
+			{
+				System.err.println( "sorry, you get to restart: "
+						+ literalInput +" is not a number" );
+				System.exit( 0 );
+			}
+			String jarIdChosen = viewToLocation.get( userChose );
 			if ( ! knowsJars.locationsHas( jarIdChosen ) )
 			{
 				System.err.print( jarIdChosen +" isn't an offered selection. ignored" );
@@ -88,19 +104,35 @@ public class CliSelection implements SelectionUi
 		}
 		else
 		{
+			Map<Integer, String> viewToArg = new HashMap<>();
 			System.out.println( "Available args:" );
 			Iterator<Map.Entry<String, ArgBundle>> keyChain = knowsJars.getArgs();
-			while ( keyChain.hasNext() )
+
+			for ( Integer ind = 0; keyChain.hasNext(); ind++ )
 			{
 				Map.Entry<String, ArgBundle> keyAndLoc = keyChain.next();
-				System.out.println( keyAndLoc.getKey() +" - "+ keyAndLoc.getValue().getDesc() );
+				viewToArg.put( ind, keyAndLoc.getKey() );
+				System.out.println( String.format( "%02d", ind )
+						+" - "+ keyAndLoc.getValue().getDesc() );
 			}
 			System.out.print( "-- ? " );
-			String argIdChosen = input.next();
+			Integer userChose = null;
+			String literalInput = input.next();
+			try
+			{
+				userChose = Integer.parseInt( literalInput );
+			}
+			catch ( NumberFormatException nfe )
+			{
+				System.err.println( "sorry, you get to restart: "
+						+ literalInput +" is not a number" );
+				System.exit( 0 );
+			}
+			String argIdChosen = viewToArg.get( userChose );
 			if ( ! knowsJars.argsHas( argIdChosen ) )
 			{
 				System.err.print( argIdChosen +" isn't an offered selection. ignored" );
-				// IMPROVE actually handle this
+				// IMPROVE actually handle this; perhaps by offering again
 				return "";
 			}
 			else
