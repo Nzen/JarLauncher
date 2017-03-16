@@ -20,6 +20,8 @@ jar
 {
 	manifest
 	{
+		'Manifest-Version' : 1.0,
+		'Created-By': 'openjdk-8-jdk - javac 1.8.0_91',
 		attributes 'Main-Class': 'ws.nzen.jarl.JarLauncher'
 	}
 }
