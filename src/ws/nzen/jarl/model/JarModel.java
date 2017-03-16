@@ -1,5 +1,5 @@
 /** see License.md */
-package ws.nzen.model;
+package ws.nzen.jarl.model;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -105,14 +105,14 @@ public class JarModel
 	/**  */
 	public void addJarLocation( JarLocation pathDesc )
 	{
-		jarLocations.put( Integer.toString( jlId ), pathDesc );
+		jarLocations.put( String.format( "%02d", jlId ), pathDesc );
 		jlId++;
 	}
 
 	/**  */
 	public void addArgBundle( ArgBundle more )
 	{
-		args.put( Integer.toString( argId ), more );
+		args.put( String.format( "%02d", argId ), more );
 		argId++;
 	}
 

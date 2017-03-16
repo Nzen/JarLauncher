@@ -1,6 +1,6 @@
 /** see License.md */
 
-package ws.nzen.parser;
+package ws.nzen.jarl.parser;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -9,10 +9,10 @@ import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
 
-import ws.nzen.JarLauncher;
-import ws.nzen.model.ArgBundle;
-import ws.nzen.model.JarLocation;
-import ws.nzen.model.JarModel;
+import ws.nzen.jarl.JarLauncher;
+import ws.nzen.jarl.model.ArgBundle;
+import ws.nzen.jarl.model.JarLocation;
+import ws.nzen.jarl.model.JarModel;
 
 /**
  * @author nzen
