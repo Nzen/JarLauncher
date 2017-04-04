@@ -4,38 +4,23 @@ apply plugin: 'java'
 sourceCompatibility = 1.8
 version = '0.9'
 
-sourceSets
-{
-	main
-	{
-		java
-		{
+sourceSets {
+	main {
+		java {
 			srcDir 'src'
 			exclude '**/test/**'
-		}
-	}
-}
+}	}	}
 
-jar
-{
-	manifest
-	{
-		'Manifest-Version' : 1.0,
-		'Created-By': 'openjdk-8-jdk - javac 1.8.0_91',
+jar {
+	manifest {
 		attributes 'Main-Class': 'ws.nzen.jarl.JarLauncher'
-	}
-}
+}	}
 
-uploadArchives
-{
-	repositories
-	{
-		flatDir
-		{
+uploadArchives {
+	repositories {
+		flatDir {
 			dirs 'out'
-		}
-	}
-}
+}	}	}
 
 
 
