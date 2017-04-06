@@ -20,8 +20,6 @@ public class ParserFactory
 			Path theConfig = Paths.get( filepath );
 			if (filepath.endsWith( "fastArg" ))
 				return new FastArgParser( theConfig );
-			/*else if (filepath.endsWith( "omgArg" ))
-				return new OmgArgParser();*/
 			else if (filepath.endsWith( "xml" ))
 				return new XmlBasedParser( theConfig );
 			else

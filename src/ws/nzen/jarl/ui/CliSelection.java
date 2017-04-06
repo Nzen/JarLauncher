@@ -3,14 +3,16 @@ package ws.nzen.jarl.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Scanner;
 
 import ws.nzen.jarl.model.ArgBundle;
 import ws.nzen.jarl.model.JarLocation;
 import ws.nzen.jarl.model.JarModel;
+import ws.nzen.jarl.model.SelfDescribes;
 
 /** shows options via stdin */
 public class CliSelection implements SelectionUi
@@ -50,21 +52,14 @@ public class CliSelection implements SelectionUi
 		}
 		else if ( knowsJars.numberOfLocations() == 1 )
 		{
-			return "0";
+			// just use the first one
+			return knowsJars.getLocations().next().getKey();
 		}
 		else
 		{
 			System.out.println( "Available jars:" );
-			Map<Integer, String> viewToLocation = new HashMap<>(
-					knowsJars.numberOfLocations() );
-			Iterator<Map.Entry<String, JarLocation>> keyChain = knowsJars.getLocations();
-			for ( Integer ind = 0; keyChain.hasNext(); ind++ )
-			{
-				Map.Entry<String, JarLocation> keyAndLoc = keyChain.next();
-				viewToLocation.put( ind, keyAndLoc.getKey() );
-				System.out.println( String.format( "%02d", ind )
-						+" - "+ keyAndLoc.getValue().getDesc() );
-			}
+			Map<Integer, String> viewToLocation = showOptions( knowsJars.getLocations(),
+					knowsJars.numberOfLocations(), new TreeMap<>() );
 			System.out.print( "-- ? " );
 			Integer userChose = null;
 			String literalInput = input.next();
@@ -92,6 +87,7 @@ public class CliSelection implements SelectionUi
 		}
 	}
 
+
 	private String getArgBundleId( Scanner input )
 	{
 		if ( knowsJars.numberOfArgBundles() < 1 )
@@ -100,21 +96,14 @@ public class CliSelection implements SelectionUi
 		}
 		else if ( knowsJars.numberOfArgBundles() == 1 )
 		{
-			return "0";
+			// just use the first one
+			return knowsJars.getArgs().next().getKey();
 		}
 		else
 		{
-			Map<Integer, String> viewToArg = new HashMap<>();
 			System.out.println( "Available args:" );
-			Iterator<Map.Entry<String, ArgBundle>> keyChain = knowsJars.getArgs();
-
-			for ( Integer ind = 0; keyChain.hasNext(); ind++ )
-			{
-				Map.Entry<String, ArgBundle> keyAndLoc = keyChain.next();
-				viewToArg.put( ind, keyAndLoc.getKey() );
-				System.out.println( String.format( "%02d", ind )
-						+" - "+ keyAndLoc.getValue().getDesc() );
-			}
+			Map<Integer, String> viewToArgs = showOptions( new TreeMap<>(),
+					knowsJars.numberOfLocations(), knowsJars.getArgs() );
 			System.out.print( "-- ? " );
 			Integer userChose = null;
 			String literalInput = input.next();
@@ -128,7 +117,7 @@ public class CliSelection implements SelectionUi
 						+ literalInput +" is not a number" );
 				System.exit( 0 );
 			}
-			String argIdChosen = viewToArg.get( userChose );
+			String argIdChosen = viewToArgs.get( userChose );
 			if ( ! knowsJars.argsHas( argIdChosen ) )
 			{
 				System.err.print( argIdChosen +" isn't an offered selection. ignored" );
@@ -140,6 +129,108 @@ public class CliSelection implements SelectionUi
 				return argIdChosen;
 			}
 		}
+	}
+
+
+	// wasn't able to use private Map<> sOpt( Iterator<M.E<Str, ? extends Interface>>, ... )
+
+	private Map<Integer, String> showOptions( Iterator<Map.Entry<String, JarLocation>> toShow,
+			int howMany, Map<Integer, String> viewToModel )
+	{
+		if ( howMany <= 10 )
+		{
+			// single column
+			for ( Integer ind = 0; toShow.hasNext(); ind++ )
+			{
+				Map.Entry<String, JarLocation> keyAndLoc = toShow.next();
+				viewToModel.put( ind, keyAndLoc.getKey() );
+				System.out.println( formattedIndAndDesc( ind, keyAndLoc
+						.getValue().getDesc() ) );
+			}
+		}
+		else
+		{
+			// two columns
+			int halfway = howMany / 2;
+			java.util.Queue<String> firstColumn = new java.util.ArrayDeque<>( halfway );
+			String fullDesc;
+			int longest = 0;
+			for ( Integer ind = 0; ind < halfway; ind++ )
+			{
+				Map.Entry<String, JarLocation> keyAndLoc = toShow.next();
+				viewToModel.put( ind, keyAndLoc.getKey() );
+				fullDesc = formattedIndAndDesc( ind, keyAndLoc
+						.getValue().getDesc() );
+				if ( fullDesc.length() > longest )
+				{
+					longest = fullDesc.length();
+				}
+				firstColumn.add( fullDesc );
+			}
+			String maxWidthFlag = "%-"+ longest +"s";
+			for ( Integer ind = halfway; toShow.hasNext(); ind++ )
+			{
+				Map.Entry<String, JarLocation> keyAndLoc = toShow.next();
+				viewToModel.put( ind, keyAndLoc.getKey() );
+				System.out.println( String.format( maxWidthFlag,
+						firstColumn.poll() ) + formattedIndAndDesc(
+								ind, keyAndLoc.getValue().getDesc() ) );
+			}
+		}
+		return viewToModel;
+	}
+
+
+	private Map<Integer, String> showOptions( Map<Integer, String> viewToModel,
+			int howMany, Iterator<Map.Entry<String, ArgBundle>> toShow )
+	{
+		if ( howMany <= 10 )
+		{
+			// single column
+			for ( Integer ind = 0; toShow.hasNext(); ind++ )
+			{
+				Map.Entry<String, ArgBundle> keyAndLoc = toShow.next();
+				viewToModel.put( ind, keyAndLoc.getKey() );
+				System.out.println( formattedIndAndDesc( ind, keyAndLoc
+						.getValue().getDesc() ) );
+			}
+		}
+		else
+		{
+			// two columns
+			int halfway = howMany / 2;
+			java.util.Queue<String> firstColumn = new java.util.ArrayDeque<>( halfway );
+			String fullDesc;
+			int longest = 0;
+			for ( Integer ind = 0; ind < halfway; ind++ )
+			{
+				Map.Entry<String, ArgBundle> keyAndLoc = toShow.next();
+				viewToModel.put( ind, keyAndLoc.getKey() );
+				fullDesc = formattedIndAndDesc( ind, keyAndLoc
+						.getValue().getDesc() );
+				if ( fullDesc.length() > longest )
+				{
+					longest = fullDesc.length();
+				}
+				firstColumn.add( fullDesc );
+			}
+			String maxWidthFlag = "%-"+ (longest +1) +"s";
+			for ( Integer ind = halfway; toShow.hasNext(); ind++ )
+			{
+				Map.Entry<String, ArgBundle> keyAndLoc = toShow.next();
+				viewToModel.put( ind, keyAndLoc.getKey() );
+				System.out.println( String.format( maxWidthFlag,
+						firstColumn.poll() ) + formattedIndAndDesc(
+								ind, keyAndLoc.getValue().getDesc() ) );
+			}
+		}
+		return viewToModel;
+	}
+
+
+	private String formattedIndAndDesc( int ind, String desc )
+	{
+		return String.format( "%02d", ind ) +" - "+ desc;
 	}
 
 	@Override

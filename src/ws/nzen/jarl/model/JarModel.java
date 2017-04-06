@@ -1,12 +1,9 @@
 /** see License.md */
 package ws.nzen.jarl.model;
 
-import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author nzen
@@ -14,10 +11,6 @@ import java.util.Set;
  */
 public class JarModel
 {
-	@Deprecated
-	private List<String> jarPaths; // IMPROVE use a map instead
-	@Deprecated
-	private List<String> oldJarArgs;
 
 	private int jlId = 0, argId = 0;
 	private Map<String, JarLocation> jarLocations;
@@ -28,21 +21,8 @@ public class JarModel
 	/**  */
 	public JarModel()
 	{
-		jarLocations = new HashMap<String, JarLocation>();
-		args = new HashMap<String, ArgBundle>();
-	}
-
-	public JarModel( List<String> theJars, List<String> theOptions )
-	{
-		setJarPaths( theJars );
-		setJarArgs( theOptions );
-	}
-
-	public JarModel( String jvm, List<String> theJars, List<String> theOptions )
-	{
-		setJvmLocation( jvm );
-		setJarPaths( theJars );
-		setJarArgs( theOptions );
+		jarLocations = new TreeMap<>();
+		args = new TreeMap<>();
 	}
 
 	/**  */
@@ -146,32 +126,6 @@ public class JarModel
 	public boolean argsHas( String id )
 	{
 		return args.containsKey( id );
-	}
-
-	public List<String> getJarPaths()
-	{
-		return jarPaths;
-	}
-
-	public List<String> getJarArgs()
-	{
-		return oldJarArgs;
-	}
-
-	public void setJarPaths( List<String> pJarPaths )
-	{
-		if ( pJarPaths == null )
-			this.jarPaths = new LinkedList<String>();
-		else
-			this.jarPaths = pJarPaths;
-	}
-
-	public void setJarArgs( List<String> pJarArgs )
-	{
-		if ( pJarArgs == null )
-			this.oldJarArgs = new LinkedList<String>();
-		else
-			this.oldJarArgs = pJarArgs;
 	}
 
 	public String getJvmLocation()

@@ -60,13 +60,19 @@ public class JarLocation
 	/** desc or location */
 	public String getDesc()
 	{
-		String tuneNotes = " ";
-		for ( String knob : tuners )
-			tuneNotes += knob;
 		if ( desc.isEmpty() )
+		{
+			String tuneNotes = " ";
+			for ( String knob : tuners )
+			{
+				tuneNotes += knob;
+			}
 			return location + tuneNotes;
+		}
 		else
+		{
 			return desc + tuneNotes;
+		}
 	}
 
 	public void setDesc( String desc )
