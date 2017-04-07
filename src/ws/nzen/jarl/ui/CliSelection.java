@@ -4,6 +4,7 @@ package ws.nzen.jarl.ui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.TreeMap;
+import java.util.ArrayDeque;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Queue;
@@ -38,7 +39,8 @@ public class CliSelection implements SelectionUi
 		if ( jarIdChosen.isEmpty() )
 			return; // already complained
 		String argIdChosen = getArgBundleId( input );
-		reactor.actionPerformed(new ActionEvent( this, 6345,
+		int arbitraryId = 6345;
+		reactor.actionPerformed(new ActionEvent( this, arbitraryId,
 				knowsJars.getComboRef( jarIdChosen, argIdChosen ) ));
 		// FIX this doesn;t handle a no arg setup, le sigh
 	}
@@ -103,7 +105,7 @@ public class CliSelection implements SelectionUi
 		{
 			System.out.println( "Available args:" );
 			Map<Integer, String> viewToArgs = showOptions( new TreeMap<>(),
-					knowsJars.numberOfLocations(), knowsJars.getArgs() );
+					knowsJars.numberOfArgBundles(), knowsJars.getArgs() );
 			System.out.print( "-- ? " );
 			Integer userChose = null;
 			String literalInput = input.next();
@@ -152,10 +154,10 @@ public class CliSelection implements SelectionUi
 		{
 			// two columns
 			int halfway = howMany / 2;
-			java.util.Queue<String> firstColumn = new java.util.ArrayDeque<>( halfway );
+			Queue<String> firstColumn = new ArrayDeque<>( halfway );
 			String fullDesc;
 			int longest = 0;
-			for ( Integer ind = 0; ind < halfway; ind++ )
+			for ( Integer ind = 0; ind <= halfway; ind++ )
 			{
 				Map.Entry<String, JarLocation> keyAndLoc = toShow.next();
 				viewToModel.put( ind, keyAndLoc.getKey() );
@@ -172,9 +174,15 @@ public class CliSelection implements SelectionUi
 			{
 				Map.Entry<String, JarLocation> keyAndLoc = toShow.next();
 				viewToModel.put( ind, keyAndLoc.getKey() );
+				String left = ( ! firstColumn.isEmpty() ) ? firstColumn.poll() : "";
 				System.out.println( String.format( maxWidthFlag,
-						firstColumn.poll() ) + formattedIndAndDesc(
+						left ) + formattedIndAndDesc(
 								ind, keyAndLoc.getValue().getDesc() ) );
+			}
+			// show stragglers
+			while ( ! firstColumn.isEmpty() )
+			{
+				System.out.println( firstColumn.poll() );
 			}
 		}
 		return viewToModel;
@@ -199,10 +207,10 @@ public class CliSelection implements SelectionUi
 		{
 			// two columns
 			int halfway = howMany / 2;
-			java.util.Queue<String> firstColumn = new java.util.ArrayDeque<>( halfway );
+			Queue<String> firstColumn = new ArrayDeque<>( halfway );
 			String fullDesc;
 			int longest = 0;
-			for ( Integer ind = 0; ind < halfway; ind++ )
+			for ( Integer ind = 0; ind <= halfway; ind++ )
 			{
 				Map.Entry<String, ArgBundle> keyAndLoc = toShow.next();
 				viewToModel.put( ind, keyAndLoc.getKey() );
@@ -219,9 +227,15 @@ public class CliSelection implements SelectionUi
 			{
 				Map.Entry<String, ArgBundle> keyAndLoc = toShow.next();
 				viewToModel.put( ind, keyAndLoc.getKey() );
+				String left = ( ! firstColumn.isEmpty() ) ? firstColumn.poll() : "";
 				System.out.println( String.format( maxWidthFlag,
-						firstColumn.poll() ) + formattedIndAndDesc(
+						left ) + formattedIndAndDesc(
 								ind, keyAndLoc.getValue().getDesc() ) );
+			}
+			// show stragglers
+			while ( firstColumn.size() > 0 )
+			{
+				System.out.println( firstColumn.poll() );
 			}
 		}
 		return viewToModel;

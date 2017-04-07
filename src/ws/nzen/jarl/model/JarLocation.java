@@ -71,7 +71,7 @@ public class JarLocation
 		}
 		else
 		{
-			return desc + tuneNotes;
+			return desc;
 		}
 	}
 
