@@ -153,11 +153,11 @@ public class CliSelection implements SelectionUi
 		else
 		{
 			// two columns
-			int halfway = howMany / 2;
+			int halfway = howMany / 2 +1;
 			Queue<String> firstColumn = new ArrayDeque<>( halfway );
 			String fullDesc;
 			int longest = 0;
-			for ( Integer ind = 0; ind <= halfway; ind++ )
+			for ( Integer ind = 0; ind < halfway; ind++ )
 			{
 				Map.Entry<String, JarLocation> keyAndLoc = toShow.next();
 				viewToModel.put( ind, keyAndLoc.getKey() );
@@ -169,6 +169,7 @@ public class CliSelection implements SelectionUi
 				}
 				firstColumn.add( fullDesc );
 			}
+			longest++;
 			String maxWidthFlag = "%-"+ longest +"s";
 			for ( Integer ind = halfway; toShow.hasNext(); ind++ )
 			{
@@ -210,7 +211,7 @@ public class CliSelection implements SelectionUi
 			Queue<String> firstColumn = new ArrayDeque<>( halfway );
 			String fullDesc;
 			int longest = 0;
-			for ( Integer ind = 0; ind <= halfway; ind++ )
+			for ( Integer ind = 0; ind < halfway; ind++ )
 			{
 				Map.Entry<String, ArgBundle> keyAndLoc = toShow.next();
 				viewToModel.put( ind, keyAndLoc.getKey() );
@@ -222,6 +223,7 @@ public class CliSelection implements SelectionUi
 				}
 				firstColumn.add( fullDesc );
 			}
+			longest++;
 			String maxWidthFlag = "%-"+ (longest +1) +"s";
 			for ( Integer ind = halfway; toShow.hasNext(); ind++ )
 			{
