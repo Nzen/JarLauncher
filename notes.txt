@@ -57,3 +57,24 @@ Here is an example that starts a process with a modified working directory and e
  assert pb.redirectOutput().file() == log;
  assert p.getInputStream().read() == -1;
 To start a process with an explicit set of environment variables, first call Map.clear() before adding environment variables.
+
+----
+170911
+
+For Scott's sake, I want to have JarLauncher ask again after done wit this jar (as he's using it and java stopped showing the console on ms-windows. I'm curious if waiting will still redirectIo or fill up the buffer and crash. I don't have a jar that spits out a bunch of logging and lasts a brief time. I'm afraid I'll need to make a noisy jar or hack this launcher up (I may do it just to test) to do whatever.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,11 +1,11 @@
 
 ## Jar Launcher ##
 
-Allows user to select a jar and arguments. Able to build the selection from either a fastArg file or xml that conforms to config.dtd .
+Allows user to select a jar and arguments. Able to build the selection from either a fastArg file or xml that conforms to config.dtd . Adheres to a Compatibilty versioning strategy.
 
 ### Motivation ###
 
-We use a number of jars at work with differing arguments. I don't want so many shortcuts on my desktop. Hence, I'd rather press 2 and 5. Plus, this was an opportunity to learn one of java's xml parsing api`s. A little later I intend to use it to learn how to make a javafx gui.
+We use a number of jars at work with differing arguments. I don't want so many shortcuts on my desktop. Hence, I'd rather press 2 and 5. Plus, this was an opportunity to learn one of java's xml parsing api`s. A little later I may use it to learn how to make a javafx gui.
 
 ### License ###
 

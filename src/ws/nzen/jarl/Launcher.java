@@ -28,7 +28,7 @@ public class Launcher
 	}
 
 	/** build process from the JarModel */
-	public void runJar()
+	public void runJar( JarLauncher restarter )
 	{
 		Path jarFile = Paths.get( whereIsJar.getLocation() ).toAbsolutePath();
 		List<String> commandComponents = new LinkedList<String>();
@@ -51,11 +51,17 @@ public class Launcher
 		}
 		try
 		{
-			yourJar.start();
+			yourJar.start().waitFor();
+			restarter.showPreviousOptions();
 		}
 		catch ( IOException ie )
 		{
-			System.err.println( "Couldn't launch jar because "+ ie.toString() );
+			System.err.println( "Couldn't launch jar because "+ ie );
+		}
+		catch ( InterruptedException ie )
+		{
+			System.err.println( "Programmatically told to quit via "+ ie );
+			return;
 		}
 	}
 

@@ -71,6 +71,21 @@ public class JarLauncher implements ActionListener
 		toShow.setVisible( true );
 	}
 
+
+	void showPreviousOptions()
+	{
+		if ( tableOfOptions == null )
+		{
+			throw new RuntimeException(
+					"asked for optinos before they've been parsed" );
+		}
+		SelectionUi toShow = new CliSelection();
+		toShow.setJarModel( tableOfOptions );
+		toShow.addActionListener( this );
+		toShow.setVisible( true );
+	}
+
+
 	/** called by SelectionUi to indicate we are ready */
 	public void actionPerformed( ActionEvent userSelection )
 	{
@@ -79,7 +94,7 @@ public class JarLauncher implements ActionListener
 				Paths.get( tableOfOptions.getJvmLocation() ),
 				tableOfOptions.getPathOfComboRef(toUse),
 				tableOfOptions.getArgOfComboRef(toUse) );
-		platform.runJar();
+		platform.runJar( this );
 	}
 
 }
