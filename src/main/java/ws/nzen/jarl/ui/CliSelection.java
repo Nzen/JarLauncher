@@ -246,7 +246,7 @@ public class CliSelection implements SelectionUi
 
 	private String formattedIndAndDesc( int ind, String desc )
 	{
-		return String.format( "%02d", ind ) +" - "+ desc;
+		return String.format( "%02d - %s", ind, desc );
 	}
 
 	@Override
