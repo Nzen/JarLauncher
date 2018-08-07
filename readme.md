@@ -1,7 +1,7 @@
 
 ## Jar Launcher ##
 
-Allows user to select a jar and arguments. Able to build the selection from either a fastArg file or xml that conforms to config.dtd . Adheres to a Compatibilty versioning strategy.
+Allows user to select a jar and arguments. Able to build the selection from a xml that conforms to config.dtd . Adheres to a Compatibilty versioning strategy.
 
 ### Motivation ###
 
@@ -20,16 +20,6 @@ see License.md for license information. Based off of Fair License
 The real grammer is in config.dtd .
 
 Basically, jl_options, the root element, expects some locations and maybe an argBundle. At least one location should be where your jre lives. The others can provide relative or absolute paths and an optional description. An argBundle has (potentially) a summary, some flags, and a needsIo element. Including the latter prompts JarLauncher to redirect io of the new process to its output.
-
-### FastArg format ###
-
-Lightweight initial format. Each line is treated as a data atom. Each prefix determines treatment:
-
-* &lt;v&gt; jvm location
-* &lt;j&gt; jar path
-* &lt;a&gt; arguments for jar
-
-I assemble it in a naive fashion, so this format can no longer communicate that it needs to output the chosen jar's stream. I consider it deprecated.
 
 
 
