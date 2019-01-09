@@ -8,19 +8,13 @@ sourceSets {
 	main {
 		java {
 			srcDir 'src'
-			exclude '**/test/**'
+			exclude '**/test/**', 'src/main/java/ws.nzen.jarl'
 }	}	}
 
 jar {
 	manifest {
 		attributes 'Main-Class': 'ws.nzen.jarl.JarLauncher'
 }	}
-
-uploadArchives {
-	repositories {
-		flatDir {
-			dirs 'out'
-}	}	}
 
 
 

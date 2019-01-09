@@ -1,6 +1,24 @@
 
 Notes
 
+# 190109
+
+remove fastargs verbage from readme
+provide a better xml dtd readme explanation, preferably tree like, but a single line will do as an initial thing.
+
+consider switching to dom based xml parsing, as this sax (while competent) is rather verbose, given that it's mostly about tracking state.
+
+parse args to find a config, if available. which means including (a/apache's) arg parsing library dependency.
+
+parse a config to get the likely window dimensions (to calculate columns from)
+
+hold a list of jvm locations in memory too; if there's more than one, offer that as a selection phase.
+maybe add "use for session duration" option and "clear session value" in the child selection.
+
+use an eno parser, so I can use the cloning aspects to save on config repetition
+
+# 170911
+
 -- remaining
 
 Launcher		accept and use JarLoc / ArgBundle, javadoc
