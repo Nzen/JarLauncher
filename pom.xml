@@ -188,6 +188,37 @@
 						true
 						</skipTests>
 					</configuration>
+				</plugin>	    	<!-- config for jar -->
+	    	<plugin>
+				<groupId>
+					org.apache.maven.plugins
+					</groupId>
+				<artifactId>
+					maven-jar-plugin
+					</artifactId>
+				<version>
+					3.1.0
+					</version>
+				<configuration>
+					<archive>
+						<index>
+							true
+						</index>
+						<manifest>
+							<addClasspath>
+								true
+								</addClasspath>
+							<mainClass>
+								ws.nzen.jarl.JarLauncher
+								</mainClass>
+							</manifest>
+						<manifestEntries>
+							<mode>
+								development
+								</mode>
+							</manifestEntries>
+						</archive>
+					</configuration>
 				</plugin>
 			</plugins>
 		</build>
