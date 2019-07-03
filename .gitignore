@@ -2,3 +2,6 @@
 /mlib/
 /mods/
 /target/
+/.settings/
+.classpath
+.project

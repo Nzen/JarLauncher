@@ -38,7 +38,7 @@ public class JarLauncher implements ActionListener
 	/** uses the default argfile to show options */
 	public JarLauncher()
 	{
-		String testFile = "config.xml";
+		String testFile = "config.eno"; // FIX fallback to xml if it exists
 		sendToParser( testFile );
 	}
 

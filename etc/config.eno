@@ -1,0 +1,54 @@
+
+# Locations
+
+## Jvms
+
+location :
+	type = jvm
+	desc = jre8
+	path = /usr/bin/java
+
+## Jars
+
+location :
+	type = jar
+	desc = red, the blood of angry men
+	path = /banana/folder/Splaintime.jar
+
+# Arguments
+
+base :
+	- erp
+	- c
+	- config/config.txt
+	- debug
+
+# red
+	summary : red, the color of desire
+	needsIo : true
+	args < base
+		- fetch
+		- origin
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

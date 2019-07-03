@@ -20,6 +20,8 @@ public class ParserFactory
 			Path theConfig = Paths.get( filepath );
 			if (filepath.endsWith( "xml" ))
 				return new XmlBasedParser( theConfig );
+			else if (filepath.endsWith( "eno" ))
+				return new EnoParser( theConfig );
 			else
 				return null;
 		}

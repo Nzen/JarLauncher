@@ -1,0 +1,41 @@
+
+= Enohar Changelog
+
+== Unreleased
+
+== [[4.0]] - 2019-07-02
+
+=== Added
+
+* Able to parse and offer choices from Eno document. Relies on Enohar.
+
+=== Changed
+
+* Assumes the default file is config.eno, not config.xml .
+
+== [[3.0]] - 2018-08-06
+
+=== Removed
+
+* No longer parses FastArg format for choices.
+
+== [[2.0]] - 2017-09-11
+
+=== Changed
+
+* JarLauncher no longer quits after a session, offers the choices again.
+
+== [[1.0]] - 2016-07-07
+
+=== Added
+
+* JarLauncher able to parse and offer choices from xml file format.
+
+== [[0.0]] - 2016-06-06
+
+=== Added
+
+* JarLauncher able to parse and offer choices from FastArgs file format.
+
+
+// Added Changed Removed

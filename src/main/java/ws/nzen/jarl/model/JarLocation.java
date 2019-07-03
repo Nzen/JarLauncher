@@ -1,6 +1,7 @@
 /** see License.md */
 package ws.nzen.jarl.model;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class JarLocation
 
 	public JarLocation()
 	{
-		tuners = new java.util.ArrayList<>(2);
+		tuners = new ArrayList<>(2);
 	}
 
 	public JarLocation( String where )
@@ -39,7 +40,7 @@ public class JarLocation
 	{
 		location = new String( toClone.getLocation() );
 		desc = new String( toClone.getDesc() );
-		tuners = new java.util.ArrayList<>( toClone.numberOfTuners() );
+		tuners = new ArrayList<>( toClone.numberOfTuners() );
 		Iterator<String> cloneeFlags = toClone.getTunerIterator();
 		while ( cloneeFlags.hasNext() )
 		{
