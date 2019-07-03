@@ -80,7 +80,8 @@ public class EnoParser implements ConfigParser
 		Section oneJvm = locations.section( "Jvms" );
 		for ( FieldSet whereIsJvm : oneJvm.fieldSets( "location" ) )
 		{
-			if ( ! whereIsJvm.entry( "type" ).equals( "jvm" ) )
+			if ( ! whereIsJvm.entry( "type" ).requiredStringValue()
+					.equals( "jvm" ) )
 				// NOTE malformed config
 				continue;
 			assembledInfo.setJvmLocation(
@@ -116,15 +117,16 @@ public class EnoParser implements ConfigParser
 	private JarModel withArgs( Section enoDoc, JarModel assembledInfo )
 	{
 		Section allArgs = enoDoc.section( "Arguments" );
-		for ( Section bundle : allArgs.sections() )
+		for ( Section argGroup : allArgs.sections() )
 		{
 			ArgBundle currBundle = new ArgBundle();
-			Value fullDesc = (Value)bundle.field( "summary" );
+			Value fullDesc = (Value)argGroup.field( "summary" );
 			String desc = ( fullDesc.optionalStringValue() == null )
 					? "" : fullDesc.optionalStringValue();
 			currBundle.setDesc( desc );
-			currBundle.setNeedsIo( bundle.field( "needsIo" ) != null );
-			for ( String arg : bundle.list( "args" ).optionalStringValues() )
+			currBundle.setNeedsIo( argGroup.field( "needsIo" ) != null );
+			for ( String arg : argGroup.list( "args" )
+					.optionalStringValues() )
 			{
 				currBundle.appendToFlags( arg );
 			}

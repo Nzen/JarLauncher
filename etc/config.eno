@@ -23,7 +23,7 @@ base :
 	- config/config.txt
 	- debug
 
-# red
+## red
 	summary : red, the color of desire
 	needsIo : true
 	args < base

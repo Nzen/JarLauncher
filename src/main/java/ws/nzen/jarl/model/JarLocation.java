@@ -23,14 +23,14 @@ public class JarLocation
 
 	public JarLocation( String where )
 	{
-		super();
+		this();
 		location = where;
 		desc = "";
 	}
 
 	public JarLocation( String where, String asWhat )
 	{
-		super();
+		this();
 		location = where;
 		desc = asWhat;
 	}

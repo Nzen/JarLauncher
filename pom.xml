@@ -18,7 +18,7 @@
 		JarLauncher
 		</artifactId>
 	<version>
-		4.0-SNAPSHOT
+		4.0
 		</version>
 	<description>
 		Offers a list of jar / argument combinations to execute
