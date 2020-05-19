@@ -1,0 +1,47 @@
+
+# issue 20200519_930
+
+## body
+
+assignee : 
+
+title : Non-numeric input breaks the program
+
+status : to do
+
+priority : medium
+
+-- desc
+It's really disappointing to have the program crash when I accidentally enter a letter, rather than prompt again for numeric input. In the past it was acceptible to crash, given that I launched this in a separate console, but nowadays, I use a dos batch file to launch it, so crashing closes the entire window.
+-- desc
+
+labels:
+
+## yyMMdd hhMM zzz
+
+comment author : 
+
+-- comment
+
+-- comment
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
